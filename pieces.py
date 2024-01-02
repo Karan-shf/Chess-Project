@@ -29,25 +29,40 @@ class Pawn(Piece):
     def allowedMoves():
         pass
 
+    def __str__(self) -> str:
+        return 'Pawn'
+
 class Rook(Piece):
 
     def allowedMoves():
         pass
+
+    def __str__(self) -> str:
+        return 'Rook'
 
 class Knight(Piece):
 
     def allowedMoves():
         pass
 
+    def __str__(self) -> str:
+        return 'Knight'
+
 class Bishop(Piece):
 
     def allowedMoves():
         pass
 
+    def __str__(self) -> str:
+        return 'Bishop'
+
 class Queen(Piece):
 
     def allowedMoves():
         pass
+
+    def __str__(self) -> str:
+        return 'Queen'
 
 class King(Piece):
 
@@ -60,6 +75,9 @@ class King(Piece):
 
     def allowedMoves():
         pass
+
+    def __str__(self) -> str:
+        return 'King'
 
 
     

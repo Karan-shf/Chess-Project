@@ -211,8 +211,46 @@ def cal_screen_position(row,col):
     pieceX = (col * BOX_LENGTH) + BOARD_SIDE_LENGTH + (BOX_LENGTH // 7)
     pieceY = (row * BOX_LENGTH) + BOARD_UPPER_LENGTH + (BOX_LENGTH // 7)
     return (pieceX,pieceY)
-    
 
+def check_piece_on_box(row,col):
+    for piece in alive_pieces:
+        if piece.row == row and piece.column == col :
+            return piece
+    return None
+
+def change_turn():
+    global turn
+    if turn == 'White':
+        turn = 'Black'
+    else:
+        turn = 'White'
+
+def move_piece(piece):
+
+    piece_seleceted = True
+
+    while piece_seleceted:
+
+        for event2 in pygame.event.get():
+            
+            if event2.type==pygame.QUIT:
+                global game_boolean
+                game_boolean = False
+                piece_seleceted = False
+                break
+            
+            if event2.type == pygame.MOUSEBUTTONUP:
+                mouseX2 = pygame.mouse.get_pos()[0]
+                mouseY2 = pygame.mouse.get_pos()[1]
+                # print(cal_board_index(mouseX,mouseY))
+                cordinate2 = cal_board_index(mouseX2,mouseY2)
+                # print(cordinate2)
+                piece.setPosition(cordinate2[0],cordinate2[1])
+                # print(f'piece: {piece}')
+                # print(f'piece row : {piece.row}')
+                # print(f'piece col : {piece.column}')
+                change_turn()
+                piece_seleceted = False
 
 #top of board = 228 , 30
 # size of squares = 66
@@ -252,6 +290,8 @@ initialize_pieces()
 #top of board = 228 , 30
 # size of squares = 66
 
+turn = 'White'
+
 game_boolean = True
 while game_boolean:
 
@@ -261,11 +301,43 @@ while game_boolean:
             game_boolean = False
             break
         
+        #select a piece
         if event.type == pygame.MOUSEBUTTONUP:
-            print(pygame.mouse.get_pos())
+            # print(pygame.mouse.get_pos())
             mouseX = pygame.mouse.get_pos()[0]
             mouseY = pygame.mouse.get_pos()[1]
-            print(cal_board_index(mouseX,mouseY))
+            # print(cal_board_index(mouseX,mouseY))
+            cordinate = cal_board_index(mouseX,mouseY)
+            piece = check_piece_on_box(cordinate[0],cordinate[1])
+            print(piece)
+            if piece is not None:
+                if piece.color == turn:
+                    move_piece(piece)
+                    # piece_seleceted = True
+                    # while piece_seleceted:
+
+                    #     for event2 in pygame.event.get():
+                    #         if event2.type==pygame.QUIT:
+                    #             game_boolean = False
+                    #             piece_seleceted = False
+                    #             break
+                            
+                    #         if event2.type == pygame.MOUSEBUTTONUP:
+                    #             mouseX2 = pygame.mouse.get_pos()[0]
+                    #             mouseY2 = pygame.mouse.get_pos()[1]
+                    #             # print(cal_board_index(mouseX,mouseY))
+                    #             cordinate2 = cal_board_index(mouseX2,mouseY2)
+                    #             print(cordinate2)
+                    #             piece.setPosition(cordinate2[0],cordinate2[1])
+                    #             print(f'piece: {piece}')
+                    #             print(f'piece row : {piece.row}')
+                    #             print(f'piece col : {piece.column}')
+                    #             change_turn()
+                    #             piece_seleceted = False
+                else:
+                    print('NOT YOUR TURN!!')
+
+
 
     # print(pygame.mouse.get_pos())
 
