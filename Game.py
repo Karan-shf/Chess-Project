@@ -50,12 +50,14 @@ def initialize_pieces():
     # WR_bishop.starting_position.topleft = (570,500)
     alive_pieces.append(WR_bishop)
 
+#fmerklgelkrngeklnrgklenlgkenrgneklrg
     W_Queen = pieces.Queen('White',pygame.image.load('imgs/White_Queen.png'),7,3)
     W_Queen.setScale(pygame.transform.scale(W_Queen.img,(50,50)))
     # W_Queen.setStartingPosition(W_Queen.img.get_rect())
     # W_Queen.starting_position.topleft = (440,500)
     alive_pieces.append(W_Queen)
 
+#ngkgnelkrngelknglekngeklnrg
     W_King = pieces.King('White',pygame.image.load('imgs/White_King.png'),7,4)
     W_King.setScale(pygame.transform.scale(W_King.img,(50,50)))
     # W_King.setStartingPosition(W_King.img.get_rect())
@@ -229,28 +231,55 @@ def move_piece(piece):
 
     piece_seleceted = True
 
+    print(piece.allowedMoves())
+
     while piece_seleceted:
 
+        # for box in piece.allowedMoves():
+        #     # pygame.draw.circle(game_board,(45,35,199),[box[0],box[1]],40)
+        #     cord = cal_screen_position(box[0],box[1])
+        #     pygame.draw.rect(game_board,'red',[cord[0]-BOARD_SIDE_LENGTH,cord[1],BOX_LENGTH,BOX_LENGTH])
+
         for event2 in pygame.event.get():
-            
+
             if event2.type==pygame.QUIT:
                 global game_boolean
                 game_boolean = False
                 piece_seleceted = False
                 break
             
-            if event2.type == pygame.MOUSEBUTTONUP:
+            # print(f'piece selected={piece_seleceted}')
+
+            if event2.type == pygame.MOUSEBUTTONDOWN:
                 mouseX2 = pygame.mouse.get_pos()[0]
                 mouseY2 = pygame.mouse.get_pos()[1]
-                # print(cal_board_index(mouseX,mouseY))
+
                 cordinate2 = cal_board_index(mouseX2,mouseY2)
-                # print(cordinate2)
-                piece.setPosition(cordinate2[0],cordinate2[1])
-                # print(f'piece: {piece}')
-                # print(f'piece row : {piece.row}')
-                # print(f'piece col : {piece.column}')
-                change_turn()
+
+
+                if cordinate2 in piece.allowedMoves():
+                    des_piece = check_piece_on_box(cordinate2[0],cordinate2[1])
+                    if des_piece is not None:
+                        alive_pieces.remove(des_piece)
+                        eaten_pieces.append(des_piece)
+                    piece.setPosition(cordinate2[0],cordinate2[1])
+                    if piece.__str__() == 'Pawn':
+                        if not piece.has_moved:
+                            piece.has_moved = True
+                        # print('ajagh vajagh')
+                    change_turn()
                 piece_seleceted = False
+
+def check_condition(piece):
+
+    for loc in piece.allowedMoves():
+
+        dest_piece = check_piece_on_box(loc[0],loc[1])
+
+        if dest_piece is not None:
+            if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
+                dest_piece.setCheck(True)
+                print('CHECK!!!!!!!')
 
 #top of board = 228 , 30
 # size of squares = 66
@@ -292,17 +321,31 @@ initialize_pieces()
 
 turn = 'White'
 
+# pygame.draw.circle(game_board,(53,156,200,50),[200,300],50)
+
 game_boolean = True
 while game_boolean:
 
     timer.tick(fps)
+
+    game_screen.fill('dark gray')
+    # game_screen.fill(pygame.Color.a)
+    # draw_borad()
+    # game_screen.blit(game_board,brect)
+
+    game_screen.blit(game_board,(200,0))
+    # game_screen.blit(game_board,(-28,-28))
+    # game_screen.blit(game_board,(-96,0))
+
+    draw_pieces()
+
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             game_boolean = False
             break
         
         #select a piece
-        if event.type == pygame.MOUSEBUTTONUP:
+        if event.type == pygame.MOUSEBUTTONDOWN:
             # print(pygame.mouse.get_pos())
             mouseX = pygame.mouse.get_pos()[0]
             mouseY = pygame.mouse.get_pos()[1]
@@ -310,9 +353,28 @@ while game_boolean:
             cordinate = cal_board_index(mouseX,mouseY)
             piece = check_piece_on_box(cordinate[0],cordinate[1])
             print(piece)
+            # pygame.draw.rect(game_board,'red',[mouseX,mouseY,BOX_LENGTH,BOX_LENGTH])
             if piece is not None:
                 if piece.color == turn:
+                    # for box in piece.allowedMoves():
+           
+                        # print('rect!!!!!!')
+                        # cord = cal_screen_position(box[0],box[1])
+                        # pygame.draw.rect(game_board,'red',[cord[0]-BOARD_SIDE_LENGTH,cord[1],BOX_LENGTH,BOX_LENGTH])
+                        # pygame.draw.circle(game_board,'blue',[cord[0]-BOARD_SIDE_LENGTH,cord[1]+BOARD_UPPER_LENGTH],BOX_LENGTH//2)
+                    
+                    # print('----------------\neaten pieces:')
+                    # for pie in eaten_pieces:
+                    #     print(pie)
+                    # # print(eaten_pieces)
+                    # print('----------------')
+
+                    # for box in piece.allowedMoves():
+                    #     print('circle!!!')
+                    #     pygame.draw.circle(game_board,(45,35,199),cal_screen_position(box[0],box[1]),30)
                     move_piece(piece)
+
+                    check_condition(piece)
                     # piece_seleceted = True
                     # while piece_seleceted:
 
@@ -322,7 +384,7 @@ while game_boolean:
                     #             piece_seleceted = False
                     #             break
                             
-                    #         if event2.type == pygame.MOUSEBUTTONUP:
+                    #         if event2.type == pygame.MOUSEBUTTONDOWN:
                     #             mouseX2 = pygame.mouse.get_pos()[0]
                     #             mouseY2 = pygame.mouse.get_pos()[1]
                     #             # print(cal_board_index(mouseX,mouseY))
@@ -340,18 +402,14 @@ while game_boolean:
 
 
     # print(pygame.mouse.get_pos())
+                    
+    
 
-    game_screen.fill('dark gray')
-    # draw_borad()
-    # game_screen.blit(game_board,brect)
 
-    game_screen.blit(game_board,(200,0))
-    # game_screen.blit(game_board,(-28,-28))
-    # game_screen.blit(game_board,(-96,0))
-
-    draw_pieces()
+    
 
     # initialize_pieces()
+
     # game_screen.blit(WL_rook.img,WL_rook.starting_position)
 
     pygame.display.flip()
