@@ -3,6 +3,8 @@ import pieces
 
 import pygame
 
+import sys
+
 # import copy
 
 # def draw_borad():
@@ -34,170 +36,170 @@ def initialize_pieces():
     WL_rook.setScale(pygame.transform.scale(WL_rook.img,(50,50)))
     # WL_rook.setStartingPosition(WL_rook.img.get_rect())
     # WL_rook.starting_position.topleft = (250,500)
-    alive_pieces.append(WL_rook)
+    pieces.alive_pieces.append(WL_rook)
 
     WR_rook = pieces.Rook('White',pygame.image.load('imgs/White_Rook.png'),7,7)
     WR_rook.setScale(pygame.transform.scale(WR_rook.img,(50,50)))
     # WR_rook.setStartingPosition(WR_rook.img.get_rect())
     # WR_rook.starting_position.topleft = (700,500)
-    alive_pieces.append(WR_rook)
+    pieces.alive_pieces.append(WR_rook)
 
     WL_knight = pieces.Knight('White',pygame.image.load('imgs/White_Knight.png'),7,1)
     WL_knight.setScale(pygame.transform.scale(WL_knight.img,(50,50)))
     # WL_knight.setStartingPosition(WL_knight.img.get_rect())
     # WL_knight.starting_position.topleft = (320,500)
-    alive_pieces.append(WL_knight)
+    pieces.alive_pieces.append(WL_knight)
 
     WR_knight = pieces.Knight('White',pygame.image.load('imgs/White_Knight.png'),7,6)
     WR_knight.setScale(pygame.transform.scale(WR_knight.img,(50,50)))
     # WR_knight.setStartingPosition(WR_knight.img.get_rect())
     # WR_knight.starting_position.topleft = (630,500)
-    alive_pieces.append(WR_knight)
+    pieces.alive_pieces.append(WR_knight)
    
     WL_bishop = pieces.Bishop('White',pygame.image.load('imgs/White_Bishop.png'),7,2)
     WL_bishop.setScale(pygame.transform.scale(WL_bishop.img,(50,50)))
     # WL_bishop.setStartingPosition(WL_bishop.img.get_rect())
     # WL_bishop.starting_position.topleft = (380,500)
-    alive_pieces.append(WL_bishop)
+    pieces.alive_pieces.append(WL_bishop)
 
     WR_bishop = pieces.Bishop('White',pygame.image.load('imgs/White_Bishop.png'),7,5)
     WR_bishop.setScale(pygame.transform.scale(WR_bishop.img,(50,50)))
     # WR_bishop.setStartingPosition(WR_bishop.img.get_rect())
     # WR_bishop.starting_position.topleft = (570,500)
-    alive_pieces.append(WR_bishop)
+    pieces.alive_pieces.append(WR_bishop)
 
 #fmerklgelkrngeklnrgklenlgkenrgneklrg
     W_Queen = pieces.Queen('White',pygame.image.load('imgs/White_Queen.png'),7,3)
     W_Queen.setScale(pygame.transform.scale(W_Queen.img,(50,50)))
     # W_Queen.setStartingPosition(W_Queen.img.get_rect())
     # W_Queen.starting_position.topleft = (440,500)
-    alive_pieces.append(W_Queen)
+    pieces.alive_pieces.append(W_Queen)
 
 #ngkgnelkrngelknglekngeklnrg
     W_King = pieces.King('White',pygame.image.load('imgs/White_King.png'),7,4)
     W_King.setScale(pygame.transform.scale(W_King.img,(50,50)))
     # W_King.setStartingPosition(W_King.img.get_rect())
     # W_King.starting_position.topleft = (510,500)
-    alive_pieces.append(W_King)
+    pieces.alive_pieces.append(W_King)
 
     W_Pawn1 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,0)
     W_Pawn1.setScale(pygame.transform.scale(W_Pawn1.img,(50,50)))
     # W_Pawn1.setStartingPosition(W_Pawn1.img.get_rect())
     # W_Pawn1.starting_position.topleft = (250,430)
-    alive_pieces.append(W_Pawn1)
+    pieces.alive_pieces.append(W_Pawn1)
 
     W_Pawn2 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,1)
     W_Pawn2.setScale(pygame.transform.scale(W_Pawn2.img,(50,50)))
     # W_Pawn2.setStartingPosition(W_Pawn2.img.get_rect())
     # W_Pawn2.starting_position.topleft = (320,430)
-    alive_pieces.append(W_Pawn2)
+    pieces.alive_pieces.append(W_Pawn2)
 
     W_Pawn3 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,2)
     W_Pawn3.setScale(pygame.transform.scale(W_Pawn3.img,(50,50)))
     # W_Pawn3.setStartingPosition(W_Pawn3.img.get_rect())
     # W_Pawn3.starting_position.topleft = (380,430)
-    alive_pieces.append(W_Pawn3)
+    pieces.alive_pieces.append(W_Pawn3)
 
     W_Pawn4 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,3)
     W_Pawn4.setScale(pygame.transform.scale(W_Pawn4.img,(50,50)))
     # W_Pawn4.setStartingPosition(W_Pawn4.img.get_rect())
     # W_Pawn4.starting_position.topleft = (440,430)
-    alive_pieces.append(W_Pawn4)
+    pieces.alive_pieces.append(W_Pawn4)
 
     W_Pawn5 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,4)
     W_Pawn5.setScale(pygame.transform.scale(W_Pawn5.img,(50,50)))
     # W_Pawn5.setStartingPosition(W_Pawn5.img.get_rect())
     # W_Pawn5.starting_position.topleft = (510,430)
-    alive_pieces.append(W_Pawn5)
+    pieces.alive_pieces.append(W_Pawn5)
 
     W_Pawn6 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,5)
     W_Pawn6.setScale(pygame.transform.scale(W_Pawn6.img,(50,50)))
     # W_Pawn6.setStartingPosition(W_Pawn6.img.get_rect())
     # W_Pawn6.starting_position.topleft = (570,430)
-    alive_pieces.append(W_Pawn6)
+    pieces.alive_pieces.append(W_Pawn6)
 
     W_Pawn7 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,6)
     W_Pawn7.setScale(pygame.transform.scale(W_Pawn7.img,(50,50)))
     # W_Pawn7.setStartingPosition(W_Pawn7.img.get_rect())
     # W_Pawn7.starting_position.topleft = (630,430)
-    alive_pieces.append(W_Pawn7)
+    pieces.alive_pieces.append(W_Pawn7)
 
     W_Pawn8 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,7)
     W_Pawn8.setScale(pygame.transform.scale(W_Pawn8.img,(50,50)))
     # W_Pawn8.setStartingPosition(W_Pawn8.img.get_rect())
     # W_Pawn8.starting_position.topleft = (700,430)
-    alive_pieces.append(W_Pawn8)
+    pieces.alive_pieces.append(W_Pawn8)
 
 
 
 
     BL_rook = pieces.Rook('Black',pygame.image.load('imgs/Black_Rook.png'),0,0)
     BL_rook.setScale(pygame.transform.scale(BL_rook.img,(50,50)))
-    alive_pieces.append(BL_rook)
+    pieces.alive_pieces.append(BL_rook)
 
     BR_rook = pieces.Rook('Black',pygame.image.load('imgs/Black_Rook.png'),0,7)
     BR_rook.setScale(pygame.transform.scale(BR_rook.img,(50,50)))
-    alive_pieces.append(BR_rook)
+    pieces.alive_pieces.append(BR_rook)
 
     BL_knight = pieces.Knight('Black',pygame.image.load('imgs/Black_Knight.png'),0,1)
     BL_knight.setScale(pygame.transform.scale(BL_knight.img,(50,50)))
-    alive_pieces.append(BL_knight)
+    pieces.alive_pieces.append(BL_knight)
 
     BR_knight = pieces.Knight('Black',pygame.image.load('imgs/Black_Knight.png'),0,6)
     BR_knight.setScale(pygame.transform.scale(BR_knight.img,(50,50)))
-    alive_pieces.append(BR_knight)
+    pieces.alive_pieces.append(BR_knight)
    
     BL_bishop = pieces.Bishop('Black',pygame.image.load('imgs/Black_Bishop.png'),0,2)
     BL_bishop.setScale(pygame.transform.scale(BL_bishop.img,(50,50)))
-    alive_pieces.append(BL_bishop)
+    pieces.alive_pieces.append(BL_bishop)
 
     BR_bishop = pieces.Bishop('Black',pygame.image.load('imgs/Black_Bishop.png'),0,5)
     BR_bishop.setScale(pygame.transform.scale(BR_bishop.img,(50,50)))
-    alive_pieces.append(BR_bishop)
+    pieces.alive_pieces.append(BR_bishop)
 
     B_Queen = pieces.Queen('Black',pygame.image.load('imgs/Black_Queen.png'),0,3)
     B_Queen.setScale(pygame.transform.scale(B_Queen.img,(50,50)))
-    alive_pieces.append(B_Queen)
+    pieces.alive_pieces.append(B_Queen)
 
     B_King = pieces.King('Black',pygame.image.load('imgs/Black_King.png'),0,4)
     B_King.setScale(pygame.transform.scale(B_King.img,(50,50)))
-    alive_pieces.append(B_King)
+    pieces.alive_pieces.append(B_King)
 
     B_Pawn1 = pieces.Pawn('Black',pygame.image.load('imgs/Black_Pawn.png'),1,0)
     B_Pawn1.setScale(pygame.transform.scale(B_Pawn1.img,(50,50)))
-    alive_pieces.append(B_Pawn1)
+    pieces.alive_pieces.append(B_Pawn1)
 
     B_Pawn2 = pieces.Pawn('Black',pygame.image.load('imgs/Black_Pawn.png'),1,1)
     B_Pawn2.setScale(pygame.transform.scale(B_Pawn2.img,(50,50)))
-    alive_pieces.append(B_Pawn2)
+    pieces.alive_pieces.append(B_Pawn2)
 
     B_Pawn3 = pieces.Pawn('Black',pygame.image.load('imgs/Black_Pawn.png'),1,2)
     B_Pawn3.setScale(pygame.transform.scale(B_Pawn3.img,(50,50)))
-    alive_pieces.append(B_Pawn3)
+    pieces.alive_pieces.append(B_Pawn3)
 
     B_Pawn4 = pieces.Pawn('Black',pygame.image.load('imgs/Black_Pawn.png'),1,3)
     B_Pawn4.setScale(pygame.transform.scale(B_Pawn4.img,(50,50)))
-    alive_pieces.append(B_Pawn4)
+    pieces.alive_pieces.append(B_Pawn4)
 
     B_Pawn5 = pieces.Pawn('Black',pygame.image.load('imgs/Black_Pawn.png'),1,4)
     B_Pawn5.setScale(pygame.transform.scale(B_Pawn5.img,(50,50)))
-    alive_pieces.append(B_Pawn5)
+    pieces.alive_pieces.append(B_Pawn5)
 
     B_Pawn6 = pieces.Pawn('Black',pygame.image.load('imgs/Black_Pawn.png'),1,5)
     B_Pawn6.setScale(pygame.transform.scale(B_Pawn6.img,(50,50)))
-    alive_pieces.append(B_Pawn6)
+    pieces.alive_pieces.append(B_Pawn6)
 
     B_Pawn7 = pieces.Pawn('Black',pygame.image.load('imgs/Black_Pawn.png'),1,6)
     B_Pawn7.setScale(pygame.transform.scale(B_Pawn7.img,(50,50)))
-    alive_pieces.append(B_Pawn7)
+    pieces.alive_pieces.append(B_Pawn7)
 
     B_Pawn8 = pieces.Pawn('Black',pygame.image.load('imgs/Black_Pawn.png'),1,7)
     B_Pawn8.setScale(pygame.transform.scale(B_Pawn8.img,(50,50)))
-    alive_pieces.append(B_Pawn8)
+    pieces.alive_pieces.append(B_Pawn8)
 
 
 def draw_pieces():
-    for piece in alive_pieces:
+    for piece in pieces.alive_pieces:
         game_screen.blit(piece.img,cal_screen_position(piece.row,piece.column))
     # game_screen.blit(W_Pawn1.img,W_Pawn1.starting_position)
     # game_screen.blit(W_Pawn2.img,W_Pawn2.starting_position)
@@ -230,27 +232,34 @@ def cal_screen_position(row,col):
     pieceY = (row * BOX_LENGTH) + BOARD_UPPER_LENGTH + (BOX_LENGTH // 7)
     return (pieceX,pieceY)
 
-def check_piece_on_box(row,col):
-    for piece in alive_pieces:
-        if piece.row == row and piece.column == col :
-            return piece
-    return None
+# def pieces.check_piece_on_box(row,col):
+#     for piece in pieces.alive_pieces:
+#         if piece.row == row and piece.column == col :
+#             return piece
+#     return None
 
 def change_turn():
-    global turn
-    if turn == 'White':
-        turn = 'Black'
+    # global pieces.turn
+    if pieces.turn == 'White':
+        pieces.turn = 'Black'
     else:
-        turn = 'White'
+        pieces.turn = 'White'
+
+def draw_allowedMoves():
+    pass
 
 def move_piece(piece):
 
     piece_seleceted = True
 
+    print(3)
+
     print(piece.allowedMoves(True))
 
-    # piece_cord = cal_screen_position(piece.row,piece.column)
-    # pygame.draw.rect(game_board,'red',[piece_cord[0],piece_cord[1],BOX_LENGTH,BOX_LENGTH],2)
+    print(4)
+
+    piece_cord = cal_screen_position(piece.row,piece.column)
+    pygame.draw.rect(game_board,'red',[piece_cord[0],piece_cord[1],BOX_LENGTH,BOX_LENGTH],2)
 
     while piece_seleceted:
 
@@ -278,59 +287,58 @@ def move_piece(piece):
 
 
                 if cordinate2 in piece.allowedMoves(True):
-                    des_piece = check_piece_on_box(cordinate2[0],cordinate2[1])
+                    des_piece = pieces.check_piece_on_box(cordinate2[0],cordinate2[1])
                     if des_piece is not None:
-                        alive_pieces.remove(des_piece)
+                        pieces.alive_pieces.remove(des_piece)
                         eaten_pieces.append(des_piece)
                     piece.setPosition(cordinate2[0],cordinate2[1])
                     if piece.__str__() == 'Pawn':
                         if not piece.has_moved:
                             piece.has_moved = True
-                        # print('ajagh vajagh')
                     change_turn()
                 piece_seleceted = False
 
-def cause_check(pieceee,consider_destination):
+# def cause_check(pieceee,consider_destination):
 
 
-    temp_piece_holder = []
-    dest_piece_in_cord = check_piece_on_box(consider_destination[0],consider_destination[1])
-    if dest_piece_in_cord is not None:
-        # if dest_piece_in_cord.color != pieceee.color:
-        # if dest_piece_in_cord is not pieceee:
-        temp_piece_holder.append(dest_piece_in_cord)
-        alive_pieces.remove(dest_piece_in_cord)
+#     temp_piece_holder = []
+#     dest_piece_in_cord = pieces.check_piece_on_box(consider_destination[0],consider_destination[1])
+#     if dest_piece_in_cord is not None:
+#         # if dest_piece_in_cord.color != pieceee.color:
+#         # if dest_piece_in_cord is not pieceee:
+#         temp_piece_holder.append(dest_piece_in_cord)
+#         pieces.alive_pieces.remove(dest_piece_in_cord)
     
-    origin_row = pieceee.row
-    origin_column = pieceee.column
+#     origin_row = pieceee.row
+#     origin_column = pieceee.column
 
 
-    # alive_pieces.remove(pieceee)
-    pieceee.row = consider_destination[0]
-    pieceee.column = consider_destination[1]
-    # alive_pieces.append(pieceee)
+#     # pieces.alive_pieces.remove(pieceee)
+#     pieceee.row = consider_destination[0]
+#     pieceee.column = consider_destination[1]
+#     # pieces.alive_pieces.append(pieceee)
 
     
 
-    #check for check conidtion
-    for checking_piece in alive_pieces:
-        if checking_piece.color != turn:
-            for loc in checking_piece.allowedMoves():
-                dest_piece = check_piece_on_box(loc[0],loc[1])
+#     #check for check conidtion
+#     for checking_piece in pieces.alive_pieces:
+#         if checking_piece.color != pieces.turn:
+#             for loc in checking_piece.allowedMoves():
+#                 dest_piece = pieces.check_piece_on_box(loc[0],loc[1])
 
-                if dest_piece is not None:
-                    #                                      dest_piece.color == turn
-                       if dest_piece.__str__()=='King' and dest_piece.color != checking_piece.color :
-                        # dest_piece.setCheck(True)
-                        pieceee.row = origin_row
-                        pieceee.column = origin_column
-                        print('not allowed to move!')
-                        alive_pieces.extend(temp_piece_holder)
-                        return True
-    pieceee.row = origin_row
-    pieceee.column = origin_column
-    alive_pieces.extend(temp_piece_holder)
-    return False
+#                 if dest_piece is not None:
+#                     #                                      dest_piece.color == pieces.turn
+#                        if dest_piece.__str__()=='King' and dest_piece.color != checking_piece.color :
+#                         # dest_piece.setCheck(True)
+#                         pieceee.row = origin_row
+#                         pieceee.column = origin_column
+#                         print('not allowed to move!')
+#                         pieces.alive_pieces.extend(temp_piece_holder)
+#                         return True
+#     pieceee.row = origin_row
+#     pieceee.column = origin_column
+#     pieces.alive_pieces.extend(temp_piece_holder)
+#     return False
 
 def check_condition():
 
@@ -340,35 +348,35 @@ def check_condition():
     #     origin_column = pieceee.column
         
 
-    #     # alive_pieces.remove(pieceee)
+    #     # pieces.alive_pieces.remove(pieceee)
     #     pieceee.row = consider_destination[0]
     #     pieceee.column = consider_destination[1]
-    #     # alive_pieces.append(pieceee)
+    #     # pieces.alive_pieces.append(pieceee)
 
     #     #check for check conidtion
-    #     for checking_piece in alive_pieces:
-    #         if checking_piece.color != turn:
+    #     for checking_piece in pieces.alive_pieces:
+    #         if checking_piece.color != pieces.turn:
     #             for loc in checking_piece.allowedMoves():
-    #                 dest_piece = check_piece_on_box(loc[0],loc[1])
+    #                 dest_piece = pieces.check_piece_on_box(loc[0],loc[1])
 
     #                 if dest_piece is not None:
-    #                     #                                   dest_piece.color == turn
+    #                     #                                   dest_piece.color == pieces.turn
     #                     if dest_piece.__str__()=='King' and dest_piece.color != checking_piece.color :
     #                         # dest_piece.setCheck(True)
     #                         pieceee.row = origin_row
     #                         pieceee.column = origin_column
     #                         print('not allowed to move!')
-    #                         return True
+    #                         repieces.turn True
     #     pieceee.row = origin_row
     #     pieceee.column = origin_column
-    #     return False
+    #     repieces.turn False
     
     # else:
     
 
         # for loc in piece.allowedMoves():
 
-        #     dest_piece = check_piece_on_box(loc[0],loc[1])
+        #     dest_piece = pieces.check_piece_on_box(loc[0],loc[1])
 
         #     if dest_piece is not None:
         #         if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
@@ -380,7 +388,7 @@ def check_condition():
         # white_king:pieces.King
         # black_king:pieces.King
 
-        # for piece in alive_pieces:
+        # for piece in pieces.alive_pieces:
         #     if piece.__str__()=='King':
         #         if piece.color == 'White':
         #             white_king = piece
@@ -391,7 +399,7 @@ def check_condition():
         #         if white_king_found and black_king_found:
         #             break
 
-        # if turn=='White':
+        # if pieces.turn=='White':
         #     underS_king = white_king
         # else:
         #     underS_king = black_king
@@ -402,10 +410,10 @@ def check_condition():
                     
 
         # if kingcheck:
-        #     for piece in alive_pieces:
-        #         if turn != piece.color:
+        #     for piece in pieces.alive_pieces:
+        #         if pieces.turn != piece.color:
         #             for loc in piece.allowedMoves():
-        #                 dest_piece = check_piece_on_box(loc[0],loc[1])
+        #                 dest_piece = pieces.check_piece_on_box(loc[0],loc[1])
 
         #                 if dest_piece is not None:
         #                     if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
@@ -417,14 +425,14 @@ def check_condition():
         #                         # dest_piece.setCheck(False)
         #                         kingcheck = False
 
-        # print(f'{turn} King check status = {kingcheck}')
+        # print(f'{pieces.turn} King check status = {kingcheck}')
 
-        for piece in alive_pieces:
+        for piece in pieces.alive_pieces:
 
-            # if turn != piece.color:
+            # if pieces.turn != piece.color:
             for loc in piece.allowedMoves():
 
-                dest_piece = check_piece_on_box(loc[0],loc[1])
+                dest_piece = pieces.check_piece_on_box(loc[0],loc[1])
 
                 if dest_piece is not None:
                     if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
@@ -451,26 +459,21 @@ font_big = pygame.font.Font('freesansbold.ttf',50)
 timer = pygame.time.Clock()
 fps = 60
 
-# WL_rook = pieces.Rook('White',(0,0),pygame.image.load('White_Rook.png'))
-# WL_rook.setScale(pygame.transform.scale(WL_rook.img,(50,50)))
-# WL_rook.setStartingPosition(WL_rook.img.get_rect())
-# WL_rook.starting_position.topleft = (255,495)
+
 
 game_board = pygame.image.load('imgs/chess_board.jpg')
 
 game_board = pygame.transform.scale(game_board,(600,600))
-# brect = game_board.get_rect()
 
-# brect.topleft = (200,0)
 
-alive_pieces = []
+# pieces.alive_pieces = []
 eaten_pieces = []
 
 initialize_pieces()
 #top of board = 228 , 30
 # size of squares = 66
 
-turn = 'White'
+# pieces.turn = 'White'
 
 # pygame.draw.circle(game_board,(53,156,200,50),[200,300],50)
 
@@ -493,7 +496,9 @@ while game_boolean:
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             game_boolean = False
-            break
+            # print("good exit gmnlskn")
+            sys.exit()
+            # break
         
         #select a piece
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -502,11 +507,12 @@ while game_boolean:
             mouseY = pygame.mouse.get_pos()[1]
             # print(cal_board_index(mouseX,mouseY))
             cordinate = cal_board_index(mouseX,mouseY)
-            piece = check_piece_on_box(cordinate[0],cordinate[1])
+            piece = pieces.check_piece_on_box(cordinate[0],cordinate[1])
             print(piece)
             # pygame.draw.rect(game_board,'red',[mouseX,mouseY,BOX_LENGTH,BOX_LENGTH])
             if piece is not None:
-                if piece.color == turn:
+                print(1)
+                if piece.color == pieces.turn:
                     # for box in piece.allowedMoves():
            
                         # print('rect!!!!!!')
@@ -523,8 +529,9 @@ while game_boolean:
                     # for box in piece.allowedMoves():
                     #     print('circle!!!')
                     #     pygame.draw.circle(game_board,(45,35,199),cal_screen_position(box[0],box[1]),30)
+                    print(2)
                     move_piece(piece)
-
+                    print(5)
                     check_condition()
 
                     # piece_seleceted = True
@@ -546,7 +553,7 @@ while game_boolean:
                     #             print(f'piece: {piece}')
                     #             print(f'piece row : {piece.row}')
                     #             print(f'piece col : {piece.column}')
-                    #             change_turn()
+                    #             change_pieces.turn()
                     #             piece_seleceted = False
                 else:
                     print('NOT YOUR TURN!!')

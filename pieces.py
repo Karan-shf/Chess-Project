@@ -1,13 +1,54 @@
-# from . import Game
-# import Game
-# from .Game import check_piece_on_box
+# from . #import # #import # from .import check_piece_on_box
+alive_pieces = []
+turn = 'White'
+
+def check_piece_on_box(row,col):
+    for piece in alive_pieces:
+        if piece.row == row and piece.column == col :
+            return piece
+    return None
+
+def cause_check(pieceee,consider_destination):
 
 
-# def check_piece_on_box(row,col):
-#     for piece in alive_pieces:
-#         if piece.row == row and piece.column == col :
-#             return piece
-#     return None
+    temp_piece_holder = []
+    dest_piece_in_cord = check_piece_on_box(consider_destination[0],consider_destination[1])
+    if dest_piece_in_cord is not None:
+        # if dest_piece_in_cord.color != pieceee.color:
+        # if dest_piece_in_cord is not pieceee:
+        temp_piece_holder.append(dest_piece_in_cord)
+        alive_pieces.remove(dest_piece_in_cord)
+    
+    origin_row = pieceee.row
+    origin_column = pieceee.column
+
+
+    # alive_pieces.remove(pieceee)
+    pieceee.row = consider_destination[0]
+    pieceee.column = consider_destination[1]
+    # alive_pieces.append(pieceee)
+
+    
+
+    #check for check conidtion
+    for checking_piece in alive_pieces:
+        if checking_piece.color != turn:
+            for loc in checking_piece.allowedMoves():
+                dest_piece = check_piece_on_box(loc[0],loc[1])
+
+                if dest_piece is not None:
+                    #                                      dest_piece.color == turn
+                       if dest_piece.__str__()=='King' and dest_piece.color != checking_piece.color :
+                        # dest_piece.setCheck(True)
+                        pieceee.row = origin_row
+                        pieceee.column = origin_column
+                        print('not allowed to move!')
+                        alive_pieces.extend(temp_piece_holder)
+                        return True
+    pieceee.row = origin_row
+    pieceee.column = origin_column
+    alive_pieces.extend(temp_piece_holder)
+    return False
 
 class Piece:
 
@@ -17,7 +58,7 @@ class Piece:
         # self.starting_position = None
         self.row = startingRow
         self.column = startingColumn
-        self.is_alive = True
+        self.is_selected = False
 
     def setScale(self,scale):
         self.img = scale
@@ -38,8 +79,6 @@ class Pawn(Piece):
         self.has_moved = False
 
     def allowedMoves(self,filter=False):
-
-        import Game
         
         allowed_locs = []
 
@@ -61,17 +100,17 @@ class Pawn(Piece):
             # for loc in all_locs_in_pattern:
 
             #     if loc[0]>=0 and loc[0]<8 and loc[1]>=0 and loc[1]<8:
-            #         des_piece = Game.check_piece_on_box(loc[0],loc[1])
+            #         des_piece = check_piece_on_box(loc[0],loc[1])
             #         if des_piece is None :
             #             allowed_locs.append(loc)
 
             # for loc in crash_locs:
             #     if loc[0]>=0 and loc[0]<8 and loc[1]>=0 and loc[1]<8:
-            #         des_piece = Game.check_piece_on_box(loc[0],loc[1])
+            #         des_piece = check_piece_on_box(loc[0],loc[1])
             #         if des_piece is not None and des_piece.color != self.color:
             #             allowed_locs.append(loc)
-            #             Game.alive_pieces.remove(des_piece)
-            #             Game.eaten_pieces.append(des_piece)
+            #             alive_pieces.remove(des_piece)
+            #             eaten_pieces.append(des_piece)
 
         else:
             
@@ -88,13 +127,13 @@ class Pawn(Piece):
             # for loc in all_locs_in_pattern:
 
             #     if loc[0]>=0 and loc[0]<8 and loc[1]>=0 and loc[1]<8:
-            #         des_piece = Game.check_piece_on_box(loc[0],loc[1])
+            #         des_piece = check_piece_on_box(loc[0],loc[1])
             #         if des_piece is None :
             #             allowed_locs.append(loc)
 
             # for loc in crash_locs:
             #     if loc[0]>=0 and loc[0]<8 and loc[1]>=0 and loc[1]<8:
-            #         des_piece = Game.check_piece_on_box(loc[0],loc[1])
+            #         des_piece = check_piece_on_box(loc[0],loc[1])
             #         if des_piece is not None and des_piece.color != self.color:
             #             allowed_locs.append(loc)
 
@@ -105,24 +144,24 @@ class Pawn(Piece):
         for loc in all_locs_in_pattern:
 
             if loc[0]>=0 and loc[0]<8 and loc[1]>=0 and loc[1]<8:
-                des_piece = Game.check_piece_on_box(loc[0],loc[1])
+                des_piece = check_piece_on_box(loc[0],loc[1])
                 if des_piece is None :
                     allowed_locs.append(loc)
 
         for loc in crash_locs:
             if loc[0]>=0 and loc[0]<8 and loc[1]>=0 and loc[1]<8:
-                des_piece = Game.check_piece_on_box(loc[0],loc[1])
+                des_piece = check_piece_on_box(loc[0],loc[1])
                 if des_piece is not None and des_piece.color != self.color:
                     allowed_locs.append(loc)
-                    # Game.alive_pieces.remove(des_piece)
-                    # Game.eaten_pieces.append(des_piece)
+                    # alive_pieces.remove(des_piece)
+                    # eaten_pieces.append(des_piece)
 
         # return allowed_locs
         if filter:
            
             mod_allowed_locs = []
             for check_loc in allowed_locs:
-                if not Game.cause_check(self,check_loc):
+                if not cause_check(self,check_loc):
                    
                     mod_allowed_locs.append(check_loc)
             return mod_allowed_locs
@@ -136,8 +175,7 @@ class Rook(Piece):
 
     def allowedMoves(self,filter=False):
 
-        import Game
-
+        #import 
         allowed_locs = []
 
         piece_row = self.row
@@ -147,7 +185,7 @@ class Rook(Piece):
         while flag:
             piece_row-=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
 
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
@@ -172,7 +210,7 @@ class Rook(Piece):
         while flag:
             piece_row+=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -195,7 +233,7 @@ class Rook(Piece):
         while flag:
             piece_col+=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -218,7 +256,7 @@ class Rook(Piece):
         while flag:
             piece_col-=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -239,7 +277,7 @@ class Rook(Piece):
            
             mod_allowed_locs = []
             for check_loc in allowed_locs:
-                if not Game.cause_check(self,check_loc):
+                if not cause_check(self,check_loc):
                    
                     mod_allowed_locs.append(check_loc)
             return mod_allowed_locs
@@ -253,8 +291,7 @@ class Knight(Piece):
 
     def allowedMoves(self,filter=False):
 
-        import Game
-
+        #import 
         allowed_locs = []
         all_locs_in_pattern = []
 
@@ -270,7 +307,7 @@ class Knight(Piece):
         for loc in all_locs_in_pattern:
 
             if loc[0]>=0 and loc[0]<8 and loc[1]>=0 and loc[1]<8:
-                des_piece = Game.check_piece_on_box(loc[0],loc[1])
+                des_piece = check_piece_on_box(loc[0],loc[1])
                 if des_piece is None or des_piece.color != self.color:
                     allowed_locs.append(loc)
 
@@ -279,7 +316,7 @@ class Knight(Piece):
            
             mod_allowed_locs = []
             for check_loc in allowed_locs:
-                if not Game.cause_check(self,check_loc):
+                if not cause_check(self,check_loc):
                    
                     mod_allowed_locs.append(check_loc)
             return mod_allowed_locs
@@ -293,8 +330,7 @@ class Bishop(Piece):
 
     def allowedMoves(self,filter=False):
 
-        import Game
-
+        #import 
         allowed_locs = []
 
         piece_row = self.row
@@ -306,7 +342,7 @@ class Bishop(Piece):
             piece_row-=1
             piece_col-=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -331,7 +367,7 @@ class Bishop(Piece):
             piece_row-=1
             piece_col+=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -356,7 +392,7 @@ class Bishop(Piece):
             piece_row+=1
             piece_col-=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -381,7 +417,7 @@ class Bishop(Piece):
             piece_row+=1
             piece_col+=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -402,7 +438,7 @@ class Bishop(Piece):
            
             mod_allowed_locs = []
             for check_loc in allowed_locs:
-                if not Game.cause_check(self,check_loc):
+                if not cause_check(self,check_loc):
                    
                     mod_allowed_locs.append(check_loc)
             return mod_allowed_locs
@@ -416,8 +452,7 @@ class Queen(Piece):
 
     def allowedMoves(self,filter=False):
 
-        import Game
-
+        #import 
         allowed_locs = []
 
         piece_row = self.row
@@ -427,7 +462,7 @@ class Queen(Piece):
         while flag:
             piece_row-=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -450,7 +485,7 @@ class Queen(Piece):
         while flag:
             piece_row+=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -473,7 +508,7 @@ class Queen(Piece):
         while flag:
             piece_col+=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -496,7 +531,7 @@ class Queen(Piece):
         while flag:
             piece_col-=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -521,7 +556,7 @@ class Queen(Piece):
             piece_row-=1
             piece_col-=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -546,7 +581,7 @@ class Queen(Piece):
             piece_row-=1
             piece_col+=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -571,7 +606,7 @@ class Queen(Piece):
             piece_row+=1
             piece_col-=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -596,7 +631,7 @@ class Queen(Piece):
             piece_row+=1
             piece_col+=1
             if piece_row>=0 and piece_row<8 and piece_col>=0 and piece_col<8:
-                des_piece = Game.check_piece_on_box(piece_row,piece_col)
+                des_piece = check_piece_on_box(piece_row,piece_col)
                 # if des_piece is None or des_piece.color != self.color:
                 #     allowed_locs.append([piece_row,piece_col])
                 # else:
@@ -613,13 +648,13 @@ class Queen(Piece):
                 flag = False
 
         if filter:
-            # if not Game.cause_check(self,allowed_locs[0]):
+            # if not cause_check(self,allowed_locs[0]):
             #     return allowed_locs
             # else:
             #     return []
             mod_allowed_locs = []
             for check_loc in allowed_locs:
-                if not Game.cause_check(self,check_loc):
+                if not cause_check(self,check_loc):
                     # allowed_locs.remove(check_loc)
                     mod_allowed_locs.append(check_loc)
             return mod_allowed_locs
@@ -641,8 +676,7 @@ class King(Piece):
 
     def allowedMoves(self,filter=False):
 
-        import Game
-
+        #import 
         allowed_locs = []
         all_locs_in_pattern = []
 
@@ -659,7 +693,7 @@ class King(Piece):
         for loc in all_locs_in_pattern:
 
             if loc[0]>=0 and loc[0]<8 and loc[1]>=0 and loc[1]<8:
-                des_piece = Game.check_piece_on_box(loc[0],loc[1])
+                des_piece = check_piece_on_box(loc[0],loc[1])
                 if des_piece is None or des_piece.color != self.color:
                     allowed_locs.append(loc)
 
@@ -669,7 +703,7 @@ class King(Piece):
            
             mod_allowed_locs = []
             for check_loc in allowed_locs:
-                if not Game.cause_check(self,check_loc):
+                if not cause_check(self,check_loc):
                    
                     mod_allowed_locs.append(check_loc)
             return mod_allowed_locs
