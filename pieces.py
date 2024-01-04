@@ -37,7 +37,7 @@ class Pawn(Piece):
         super().__init__(color, image, startingRow, startingColumn)
         self.has_moved = False
 
-    def allowedMoves(self):
+    def allowedMoves(self,filter=False):
 
         import Game
         
@@ -117,14 +117,24 @@ class Pawn(Piece):
                     # Game.alive_pieces.remove(des_piece)
                     # Game.eaten_pieces.append(des_piece)
 
-        return allowed_locs
+        # return allowed_locs
+        if filter:
+           
+            mod_allowed_locs = []
+            for check_loc in allowed_locs:
+                if not Game.cause_check(self,check_loc):
+                   
+                    mod_allowed_locs.append(check_loc)
+            return mod_allowed_locs
+        else:
+            return allowed_locs
 
     def __str__(self) -> str:
         return 'Pawn'
 
 class Rook(Piece):
 
-    def allowedMoves(self):
+    def allowedMoves(self,filter=False):
 
         import Game
 
@@ -224,14 +234,24 @@ class Rook(Piece):
             else:
                 flag = False
 
-        return allowed_locs
+        # return allowed_locs
+        if filter:
+           
+            mod_allowed_locs = []
+            for check_loc in allowed_locs:
+                if not Game.cause_check(self,check_loc):
+                   
+                    mod_allowed_locs.append(check_loc)
+            return mod_allowed_locs
+        else:
+            return allowed_locs
 
     def __str__(self) -> str:
         return 'Rook'
 
 class Knight(Piece):
 
-    def allowedMoves(self):
+    def allowedMoves(self,filter=False):
 
         import Game
 
@@ -254,14 +274,24 @@ class Knight(Piece):
                 if des_piece is None or des_piece.color != self.color:
                     allowed_locs.append(loc)
 
-        return allowed_locs
+        # return allowed_locs
+        if filter:
+           
+            mod_allowed_locs = []
+            for check_loc in allowed_locs:
+                if not Game.cause_check(self,check_loc):
+                   
+                    mod_allowed_locs.append(check_loc)
+            return mod_allowed_locs
+        else:
+            return allowed_locs
 
     def __str__(self) -> str:
         return 'Knight'
 
 class Bishop(Piece):
 
-    def allowedMoves(self):
+    def allowedMoves(self,filter=False):
 
         import Game
 
@@ -367,14 +397,24 @@ class Bishop(Piece):
             else:
                 flag = False
 
-        return allowed_locs
+        # return allowed_locs
+        if filter:
+           
+            mod_allowed_locs = []
+            for check_loc in allowed_locs:
+                if not Game.cause_check(self,check_loc):
+                   
+                    mod_allowed_locs.append(check_loc)
+            return mod_allowed_locs
+        else:
+            return allowed_locs
 
     def __str__(self) -> str:
         return 'Bishop'
 
 class Queen(Piece):
 
-    def allowedMoves(self):
+    def allowedMoves(self,filter=False):
 
         import Game
 
@@ -572,7 +612,19 @@ class Queen(Piece):
             else:
                 flag = False
 
-        return allowed_locs
+        if filter:
+            # if not Game.cause_check(self,allowed_locs[0]):
+            #     return allowed_locs
+            # else:
+            #     return []
+            mod_allowed_locs = []
+            for check_loc in allowed_locs:
+                if not Game.cause_check(self,check_loc):
+                    # allowed_locs.remove(check_loc)
+                    mod_allowed_locs.append(check_loc)
+            return mod_allowed_locs
+        else:
+            return allowed_locs
 
 
     def __str__(self) -> str:
@@ -587,7 +639,7 @@ class King(Piece):
     def setCheck(self,check_sit):
         self.is_checked = check_sit
 
-    def allowedMoves(self):
+    def allowedMoves(self,filter=False):
 
         import Game
 
@@ -611,7 +663,18 @@ class King(Piece):
                 if des_piece is None or des_piece.color != self.color:
                     allowed_locs.append(loc)
 
-        return allowed_locs
+        # return allowed_locs
+                    
+        if filter:
+           
+            mod_allowed_locs = []
+            for check_loc in allowed_locs:
+                if not Game.cause_check(self,check_loc):
+                   
+                    mod_allowed_locs.append(check_loc)
+            return mod_allowed_locs
+        else:
+            return allowed_locs
 
     def __str__(self) -> str:
         return 'King'

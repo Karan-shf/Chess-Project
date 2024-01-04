@@ -3,6 +3,8 @@ import pieces
 
 import pygame
 
+# import copy
+
 # def draw_borad():
 #     for i in range(32):
 #         column=i%4
@@ -11,6 +13,20 @@ import pygame
 #             pygame.draw.rect(game_screen,'light gray',[450-(column*150), row*75, 75, 75])
 #         else:
 #             pygame.draw.rect(game_screen,'light gray',[525-(column*150), row*75, 75, 75])
+
+class move:
+
+    def __init__(self,color,piece,origin_loc,destination) -> None:
+        self.color = color
+        self.piece = piece
+        self.origin_loc = origin_loc
+        self.destination = destination
+
+    def Undo(self):
+        pass
+
+    def Redo(self):
+        pass
 
 def initialize_pieces():
 
@@ -231,14 +247,18 @@ def move_piece(piece):
 
     piece_seleceted = True
 
-    print(piece.allowedMoves())
+    print(piece.allowedMoves(True))
+
+    # piece_cord = cal_screen_position(piece.row,piece.column)
+    # pygame.draw.rect(game_board,'red',[piece_cord[0],piece_cord[1],BOX_LENGTH,BOX_LENGTH],2)
 
     while piece_seleceted:
 
-        # for box in piece.allowedMoves():
-        #     # pygame.draw.circle(game_board,(45,35,199),[box[0],box[1]],40)
+        # for box in piece.allowedMoves(True):
+        # #     # pygame.draw.circle(game_board,(45,35,199),[box[0],box[1]],40)
         #     cord = cal_screen_position(box[0],box[1])
-        #     pygame.draw.rect(game_board,'red',[cord[0]-BOARD_SIDE_LENGTH,cord[1],BOX_LENGTH,BOX_LENGTH])
+        #     # pygame.draw.rect(game_board,'red',[cord[0]-BOARD_SIDE_LENGTH,cord[1],BOX_LENGTH,BOX_LENGTH])
+        #     pygame.draw.circle(game_board,'blue',[cord[0]-BOARD_SIDE_LENGTH+BOX_LENGTH//1.5,cord[1]+BOARD_UPPER_LENGTH],BOX_LENGTH//4)
 
         for event2 in pygame.event.get():
 
@@ -257,7 +277,7 @@ def move_piece(piece):
                 cordinate2 = cal_board_index(mouseX2,mouseY2)
 
 
-                if cordinate2 in piece.allowedMoves():
+                if cordinate2 in piece.allowedMoves(True):
                     des_piece = check_piece_on_box(cordinate2[0],cordinate2[1])
                     if des_piece is not None:
                         alive_pieces.remove(des_piece)
@@ -270,16 +290,147 @@ def move_piece(piece):
                     change_turn()
                 piece_seleceted = False
 
-def check_condition(piece):
+def cause_check(pieceee,consider_destination):
 
-    for loc in piece.allowedMoves():
 
-        dest_piece = check_piece_on_box(loc[0],loc[1])
+    temp_piece_holder = []
+    dest_piece_in_cord = check_piece_on_box(consider_destination[0],consider_destination[1])
+    if dest_piece_in_cord is not None:
+        # if dest_piece_in_cord.color != pieceee.color:
+        # if dest_piece_in_cord is not pieceee:
+        temp_piece_holder.append(dest_piece_in_cord)
+        alive_pieces.remove(dest_piece_in_cord)
+    
+    origin_row = pieceee.row
+    origin_column = pieceee.column
 
-        if dest_piece is not None:
-            if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
-                dest_piece.setCheck(True)
-                print('CHECK!!!!!!!')
+
+    # alive_pieces.remove(pieceee)
+    pieceee.row = consider_destination[0]
+    pieceee.column = consider_destination[1]
+    # alive_pieces.append(pieceee)
+
+    
+
+    #check for check conidtion
+    for checking_piece in alive_pieces:
+        if checking_piece.color != turn:
+            for loc in checking_piece.allowedMoves():
+                dest_piece = check_piece_on_box(loc[0],loc[1])
+
+                if dest_piece is not None:
+                    #                                      dest_piece.color == turn
+                       if dest_piece.__str__()=='King' and dest_piece.color != checking_piece.color :
+                        # dest_piece.setCheck(True)
+                        pieceee.row = origin_row
+                        pieceee.column = origin_column
+                        print('not allowed to move!')
+                        alive_pieces.extend(temp_piece_holder)
+                        return True
+    pieceee.row = origin_row
+    pieceee.column = origin_column
+    alive_pieces.extend(temp_piece_holder)
+    return False
+
+def check_condition():
+
+    # if pieceee is not None and consider_destination is not None:
+
+    #     origin_row = pieceee.row
+    #     origin_column = pieceee.column
+        
+
+    #     # alive_pieces.remove(pieceee)
+    #     pieceee.row = consider_destination[0]
+    #     pieceee.column = consider_destination[1]
+    #     # alive_pieces.append(pieceee)
+
+    #     #check for check conidtion
+    #     for checking_piece in alive_pieces:
+    #         if checking_piece.color != turn:
+    #             for loc in checking_piece.allowedMoves():
+    #                 dest_piece = check_piece_on_box(loc[0],loc[1])
+
+    #                 if dest_piece is not None:
+    #                     #                                   dest_piece.color == turn
+    #                     if dest_piece.__str__()=='King' and dest_piece.color != checking_piece.color :
+    #                         # dest_piece.setCheck(True)
+    #                         pieceee.row = origin_row
+    #                         pieceee.column = origin_column
+    #                         print('not allowed to move!')
+    #                         return True
+    #     pieceee.row = origin_row
+    #     pieceee.column = origin_column
+    #     return False
+    
+    # else:
+    
+
+        # for loc in piece.allowedMoves():
+
+        #     dest_piece = check_piece_on_box(loc[0],loc[1])
+
+        #     if dest_piece is not None:
+        #         if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
+        #             dest_piece.setCheck(True)
+        #             print('CHECK!!!!!!!')
+        # white_king_found = False
+        # black_king_found = False
+
+        # white_king:pieces.King
+        # black_king:pieces.King
+
+        # for piece in alive_pieces:
+        #     if piece.__str__()=='King':
+        #         if piece.color == 'White':
+        #             white_king = piece
+        #             white_king_found = True
+        #         else:
+        #             black_king = piece
+        #             black_king_found = True
+        #         if white_king_found and black_king_found:
+        #             break
+
+        # if turn=='White':
+        #     underS_king = white_king
+        # else:
+        #     underS_king = black_king
+
+        
+
+
+                    
+
+        # if kingcheck:
+        #     for piece in alive_pieces:
+        #         if turn != piece.color:
+        #             for loc in piece.allowedMoves():
+        #                 dest_piece = check_piece_on_box(loc[0],loc[1])
+
+        #                 if dest_piece is not None:
+        #                     if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
+        #                         dest_piece.setCheck(True)
+        #                         # print('CHECK!!!!!!!')
+        #                         kingcheck = True
+        #                         break
+        #                     else:
+        #                         # dest_piece.setCheck(False)
+        #                         kingcheck = False
+
+        # print(f'{turn} King check status = {kingcheck}')
+
+        for piece in alive_pieces:
+
+            # if turn != piece.color:
+            for loc in piece.allowedMoves():
+
+                dest_piece = check_piece_on_box(loc[0],loc[1])
+
+                if dest_piece is not None:
+                    if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
+                        # dest_piece.setCheck(True)
+                        print('CHECK!!!!!!!')
+
 
 #top of board = 228 , 30
 # size of squares = 66
@@ -374,7 +525,8 @@ while game_boolean:
                     #     pygame.draw.circle(game_board,(45,35,199),cal_screen_position(box[0],box[1]),30)
                     move_piece(piece)
 
-                    check_condition(piece)
+                    check_condition()
+
                     # piece_seleceted = True
                     # while piece_seleceted:
 
