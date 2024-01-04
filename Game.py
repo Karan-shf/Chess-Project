@@ -245,29 +245,39 @@ def change_turn():
     else:
         pieces.turn = 'White'
 
-def draw_allowedMoves():
-    pass
+def draw_allowedMoves(piece):
+    i=0
+    for box in piece.allowedMoves(True):
+
+        cord = cal_screen_position(box[0],box[1])
+
+        pygame.draw.circle(game_screen,(34,67,200-i),[cord[0]+BOX_LENGTH//3,cord[1]+BOX_LENGTH//3],BOX_LENGTH//4)
+        pygame.display.flip()
+        i+=10
 
 def move_piece(piece):
 
     piece_seleceted = True
 
-    print(3)
+
 
     print(piece.allowedMoves(True))
 
-    print(4)
 
+    # pygame.display.flip()
     piece_cord = cal_screen_position(piece.row,piece.column)
-    pygame.draw.rect(game_board,'red',[piece_cord[0],piece_cord[1],BOX_LENGTH,BOX_LENGTH],2)
+    pygame.draw.rect(game_screen,'red',[piece_cord[0]-9,piece_cord[1]-10,BOX_LENGTH,BOX_LENGTH],2)
+    pygame.display.flip()
 
     while piece_seleceted:
 
         # for box in piece.allowedMoves(True):
-        # #     # pygame.draw.circle(game_board,(45,35,199),[box[0],box[1]],40)
+        # # #     # pygame.draw.circle(game_board,(45,35,199),[box[0],box[1]],40)
         #     cord = cal_screen_position(box[0],box[1])
-        #     # pygame.draw.rect(game_board,'red',[cord[0]-BOARD_SIDE_LENGTH,cord[1],BOX_LENGTH,BOX_LENGTH])
-        #     pygame.draw.circle(game_board,'blue',[cord[0]-BOARD_SIDE_LENGTH+BOX_LENGTH//1.5,cord[1]+BOARD_UPPER_LENGTH],BOX_LENGTH//4)
+        # #     # pygame.draw.rect(game_board,'red',[cord[0]-BOARD_SIDE_LENGTH,cord[1],BOX_LENGTH,BOX_LENGTH])
+        #     pygame.draw.circle(game_screen,'blue',[cord[0]+BOX_LENGTH//3,cord[1]+BOX_LENGTH//3],BOX_LENGTH//4)
+        #     pygame.display.flip()
+        draw_allowedMoves(piece)
 
         for event2 in pygame.event.get():
 
@@ -479,24 +489,22 @@ initialize_pieces()
 
 game_boolean = True
 while game_boolean:
+    # pygame.display.flip()
 
     timer.tick(fps)
 
     game_screen.fill('dark gray')
-    # game_screen.fill(pygame.Color.a)
-    # draw_borad()
-    # game_screen.blit(game_board,brect)
+    
 
     game_screen.blit(game_board,(200,0))
-    # game_screen.blit(game_board,(-28,-28))
-    # game_screen.blit(game_board,(-96,0))
+    
 
     draw_pieces()
 
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             game_boolean = False
-            # print("good exit gmnlskn")
+            # print("good exit ")
             sys.exit()
             # break
         
@@ -511,7 +519,7 @@ while game_boolean:
             print(piece)
             # pygame.draw.rect(game_board,'red',[mouseX,mouseY,BOX_LENGTH,BOX_LENGTH])
             if piece is not None:
-                print(1)
+         
                 if piece.color == pieces.turn:
                     # for box in piece.allowedMoves():
            
@@ -529,9 +537,9 @@ while game_boolean:
                     # for box in piece.allowedMoves():
                     #     print('circle!!!')
                     #     pygame.draw.circle(game_board,(45,35,199),cal_screen_position(box[0],box[1]),30)
-                    print(2)
+                
                     move_piece(piece)
-                    print(5)
+      
                     check_condition()
 
                     # piece_seleceted = True
@@ -561,11 +569,6 @@ while game_boolean:
 
 
     # print(pygame.mouse.get_pos())
-                    
-    
-
-
-    
 
     # initialize_pieces()
 

@@ -42,7 +42,7 @@ def cause_check(pieceee,consider_destination):
                         # dest_piece.setCheck(True)
                         pieceee.row = origin_row
                         pieceee.column = origin_column
-                        print('not allowed to move!')
+                        # print('not allowed to move!')
                         alive_pieces.extend(temp_piece_holder)
                         return True
     pieceee.row = origin_row
