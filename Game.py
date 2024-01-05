@@ -312,12 +312,16 @@ def change_turn():
         pieces.turn = 'White'
 
 def draw_allowedMoves(piece):
+    
     i=0
     for box in piece.allowedMoves(True):
 
         cord = cal_screen_position(box[0],box[1])
 
-        pygame.draw.circle(game_screen,(34,67,200-i),[cord[0]+BOX_LENGTH//3,cord[1]+BOX_LENGTH//3],BOX_LENGTH//4)
+        b_color = 200 - i
+        b_color = max(b_color, 0)
+
+        pygame.draw.circle(game_screen,(34,67,b_color),[cord[0]+BOX_LENGTH//3,cord[1]+BOX_LENGTH//3],BOX_LENGTH//4)
         pygame.display.flip()
         i+=10
 
@@ -355,7 +359,7 @@ def move_piece(piece):
                     des_piece = pieces.check_piece_on_box(cordinate2[0],cordinate2[1])
 
                     move = Move(piece.color,piece,[piece.row,piece.column],cordinate2,des_piece)
-                    game_moves.add(move)
+                    # game_moves.add(move)
                     game_moves_stack.push(move)
                     game_moves_temp_stack.clear()
 
@@ -369,6 +373,10 @@ def move_piece(piece):
                         #     piece.has_moved = True
                         piece.move_count += 1
                     change_turn()
+
+                    check_bool = check_condition()
+                    update_gameLog(['normal move',check_bool])
+
                 piece_seleceted = False
 
 # def cause_check(pieceee,consider_destination):
@@ -426,6 +434,9 @@ def check_condition():
                 if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
                     # dest_piece.setCheck(True)
                     print('CHECK!!!!!!!')
+                    return True
+                
+    return False
 
 def check_Undo(mouseX , mouseY):
     
@@ -447,6 +458,7 @@ def check_Undo(mouseX , mouseY):
                 eaten_pieces.remove(move.eaten_piece)
                 pieces.alive_pieces.append(move.eaten_piece)
             change_turn()
+            update_gameLog(['undo',move])
         except:
             print('no moves has been made!')
 
@@ -464,6 +476,7 @@ def check_Redo(mouseX , mouseY):
                 pieces.alive_pieces.remove(move.eaten_piece)
                 eaten_pieces.append(move.eaten_piece)
             change_turn()
+            update_gameLog(['redo',move])
         except:
             print('no moves to redo')
 
@@ -560,7 +573,130 @@ def draw_eaten_pieces():
             game_screen.blit(piece.img,black_grave[j])
             j+=1
 
+def update_gameLog(content):
+
+    moves_dictionary = {
+        tuple([0, 0]) : 'a8',
+        tuple([1, 0]) : 'a7',
+        tuple([2, 0]) : 'a6',
+        tuple([3, 0]) : 'a5',
+        tuple([4, 0]) : 'a4',
+        tuple([5, 0]) : 'a3',
+        tuple([6, 0]) : 'a2',
+        tuple([7, 0]) : 'a1',
+        tuple([0, 1]) : 'b8',
+        tuple([1, 1]) : 'b7',
+        tuple([2, 1]) : 'b6',
+        tuple([3, 1]) : 'b5',
+        tuple([4, 1]) : 'b4',
+        tuple([5, 1]) : 'b3',
+        tuple([6, 1]) : 'b2',
+        tuple([7, 1]) : 'b1',
+        tuple([0, 2]) : 'c8',
+        tuple([1, 2]) : 'c7',
+        tuple([2, 2]) : 'c6',
+        tuple([3, 2]) : 'c5',
+        tuple([4, 2]) : 'c4',
+        tuple([5, 2]) : 'c3',
+        tuple([6, 2]) : 'c2',
+        tuple([7, 2]) : 'c1',
+        tuple([0, 3]) : 'd8',
+        tuple([1, 3]) : 'd7',
+        tuple([2, 3]) : 'd6',
+        tuple([3, 3]) : 'd5',
+        tuple([4, 3]) : 'd4',
+        tuple([5, 3]) : 'd3',
+        tuple([6, 3]) : 'd2',
+        tuple([7, 3]) : 'd1',
+        tuple([0, 4]) : 'e8',
+        tuple([1, 4]) : 'e7',
+        tuple([2, 4]) : 'e6',
+        tuple([3, 4]) : 'e5',
+        tuple([4, 4]) : 'e4',
+        tuple([5, 4]) : 'e3',
+        tuple([6, 4]) : 'e2',
+        tuple([7, 4]) : 'e1',
+        tuple([0, 5]) : 'f8',
+        tuple([1, 5]) : 'f7',
+        tuple([2, 5]) : 'f6',
+        tuple([3, 5]) : 'f5',
+        tuple([4, 5]) : 'f4',
+        tuple([5, 5]) : 'f3',
+        tuple([6, 5]) : 'f2',
+        tuple([7, 5]) : 'f1',
+        tuple([0, 6]) : 'g8',
+        tuple([1, 6]) : 'g7',
+        tuple([2, 6]) : 'g6',
+        tuple([3, 6]) : 'g5',
+        tuple([4, 6]) : 'g4',
+        tuple([5, 6]) : 'g3',
+        tuple([6, 6]) : 'g2',
+        tuple([7, 6]) : 'g1',
+        tuple([0, 7]) : 'h8',
+        tuple([1, 7]) : 'h7',
+        tuple([2, 7]) : 'h6',
+        tuple([3, 7]) : 'h5',
+        tuple([4, 7]) : 'h4',
+        tuple([5, 7]) : 'h3',
+        tuple([6, 7]) : 'h2',
+        tuple([7, 7]) : 'h1'
+    }
+
+    mode , context = content
+
+    file = open('GameLog.txt','at')
+
+    if mode=='normal move':
+
+
+        # To DO:
+        # - castling
+        # - enpawsan
+
     
+        check_bool = context
+        
+        last_move = game_moves_stack.properties[game_moves_stack.top]
+
+        sep = False
+
+        if last_move.eaten_piece is not None:
+            crash = ' Crash'
+            sep = True
+        else:
+            crash = ''
+
+        if game_boolean:
+            check_mate = ''
+        else:
+            check_mate = ' Check Mate'
+            sep = True
+
+        if check_bool:
+            check = ' Check'
+            sep = True
+        else:
+            check = ''
+
+        if sep:
+            seperator = '-'
+        else:
+            seperator = ''
+
+        file.write(f'{last_move.color} {last_move.piece.__str__()} to {moves_dictionary[tuple(last_move.destination)]} {seperator}{crash}{check}{check_mate}\n')
+
+    elif mode == 'undo':
+        move = context
+        file.write(f'--Undo {move.piece.color} {move.piece.__str__()} back to {moves_dictionary[tuple(move.origin_loc)]}\n')
+    elif mode =='redo':
+        move = context
+        file.write(f'--Redo {move.piece.color} {move.piece.__str__()} on to {moves_dictionary[tuple(move.destination)]}\n')
+
+
+
+    file.close()
+
+        
 
 
 #top of board = 228 , 30
@@ -603,6 +739,10 @@ initialize_pieces()
 
 # pieces.turn = 'White'
 
+#clear file
+file = open('GameLog.txt','wt')
+file.close()
+
 
 game_boolean = True
 while game_boolean:
@@ -624,6 +764,8 @@ while game_boolean:
 
     pygame.draw.rect(game_screen,'black',[50,200,100,100])
     game_screen.blit(font_big.render('Redo',True,'white'),(57,235))
+
+    game_screen.blit(font_big.render(f'{pieces.turn}\'s turn',True,'black'),(400,625))
 
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
@@ -659,7 +801,9 @@ while game_boolean:
                    
                     move_piece(piece)
       
-                    check_condition()
+                    # check_bool = check_condition()
+
+                    # update_gameLog(['normal move',check_bool])
 
                     
                 else:
@@ -668,6 +812,8 @@ while game_boolean:
 
 
     # print(pygame.mouse.get_pos())
+                    
+    
 
     # initialize_pieces()
 
