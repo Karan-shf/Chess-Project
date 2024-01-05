@@ -76,7 +76,8 @@ class Pawn(Piece):
 
     def __init__(self, color, image, startingRow, startingColumn) -> None:
         super().__init__(color, image, startingRow, startingColumn)
-        self.has_moved = False
+        # self.has_moved = False
+        self.move_count = 0
 
     def allowedMoves(self,filter=False):
         
@@ -90,7 +91,7 @@ class Pawn(Piece):
             crash_locs.append([self.row - 1, self.column - 1])
             crash_locs.append([self.row - 1, self.column + 1])
 
-            if not self.has_moved :
+            if self.move_count==0 :
                 all_locs_in_pattern.append([self.row - 1, self.column])
                 all_locs_in_pattern.append([self.row - 2, self.column])
             else:
@@ -117,7 +118,7 @@ class Pawn(Piece):
             crash_locs.append([self.row + 1, self.column - 1])
             crash_locs.append([self.row + 1, self.column + 1])
 
-            if not self.has_moved :
+            if self.move_count==0 :
                 all_locs_in_pattern.append([self.row + 1, self.column])
                 all_locs_in_pattern.append([self.row + 2, self.column])
             else:

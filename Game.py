@@ -5,30 +5,114 @@ import pygame
 
 import sys
 
-# import copy
+class Stack:
 
-# def draw_borad():
-#     for i in range(32):
-#         column=i%4
-#         row = i//4
-#         if row % 2 == 0:
-#             pygame.draw.rect(game_screen,'light gray',[450-(column*150), row*75, 75, 75])
-#         else:
-#             pygame.draw.rect(game_screen,'light gray',[525-(column*150), row*75, 75, 75])
+    def __init__(self,max) -> None:
+        self.top = -1
+        self.max = max
+        self.properties = []
+        for i in range(max):
+            self.properties.append(None)
 
-class move:
+    def push(self,value):
+        
+        if self.isFull():
+            raise Exception('Stack is Full')
+        else:
+            self.top += 1
+            self.properties[self.top] = value
+            
+    def pop(self):
 
-    def __init__(self,color,piece,origin_loc,destination) -> None:
+        if self.isEmpty():
+            raise Exception('Stack is Empty')
+        else:
+            index = self.top
+            self.top -=1
+            return self.properties[index]
+
+    def isFull(self):
+
+        if self.max-1 == self.top:
+            return True
+        else:
+            return False
+        
+    def isEmpty(self):
+
+        if self.top==-1:
+            return True
+        else:
+            return False
+        
+    def printProperties(self):
+        
+        for i in range(self.top,-1,-1):
+            print(self.properties[i])
+
+    def clear(self):
+        self.properties.clear()
+        for i in range(self.max):
+            self.properties.append(None)
+        self.top = -1
+
+    def count(self):
+        return self.top + 1
+
+class Queue:
+
+    def __init__(self,max) -> None:
+
+        self.rear = -1
+        self.front = -1
+        self.max = max
+        self.properties = []
+        for i in range(max):
+            self.properties.append(None)
+
+    def add(self,value):
+
+        if self.isFull():
+            raise Exception('Queue is Full')
+        else:
+            self.rear +=1
+            self.properties[self.rear]=value
+
+    def dequeue(self):
+
+        if self.isEmpty():
+            raise Exception('Queue is Empty')
+        else:
+            self.front+=1
+            return self.properties[self.front]
+
+    def isFull(self):
+
+        if self.max-1 == self.rear:
+            return True
+        else:
+            return False
+        
+    def isEmpty(self):
+
+        if self.front==self.rear:
+            return True
+        else:
+            return False
+        
+    def printProperties(self):
+
+        for i in range(self.front+1,self.rear+1):
+            print(self.properties[i])
+
+class Move:
+
+    def __init__(self,color,piece,origin_loc,destination,eaten_piece) -> None:
         self.color = color
         self.piece = piece
         self.origin_loc = origin_loc
         self.destination = destination
-
-    def Undo(self):
-        pass
-
-    def Redo(self):
-        pass
+        self.eaten_piece = eaten_piece
 
 def initialize_pieces():
 
@@ -197,28 +281,10 @@ def initialize_pieces():
     B_Pawn8.setScale(pygame.transform.scale(B_Pawn8.img,(50,50)))
     pieces.alive_pieces.append(B_Pawn8)
 
-
 def draw_pieces():
     for piece in pieces.alive_pieces:
         game_screen.blit(piece.img,cal_screen_position(piece.row,piece.column))
-    # game_screen.blit(W_Pawn1.img,W_Pawn1.starting_position)
-    # game_screen.blit(W_Pawn2.img,W_Pawn2.starting_position)
-    # game_screen.blit(W_Pawn3.img,W_Pawn3.starting_position)
-    # game_screen.blit(W_Pawn4.img,W_Pawn4.starting_position)
-    # game_screen.blit(W_Pawn5.img,W_Pawn5.starting_position)
-    # game_screen.blit(W_Pawn6.img,W_Pawn6.starting_position)
-    # game_screen.blit(W_Pawn7.img,W_Pawn7.starting_position)
-    # game_screen.blit(W_Pawn8.img,W_Pawn8.starting_position)
-
-    # game_screen.blit(WL_rook.img,WL_rook.starting_position)
-    # game_screen.blit(WL_knight.img,WL_knight.starting_position)
-    # game_screen.blit(WL_bishop.img,WL_bishop.starting_position)
-    # game_screen.blit(W_Queen.img,W_Queen.starting_position)
-    # game_screen.blit(W_King.img,W_King.starting_position)
-    # game_screen.blit(WR_bishop.img,WR_bishop.starting_position)
-    # game_screen.blit(WR_knight.img,WR_knight.starting_position)
-    # game_screen.blit(WR_rook.img,WR_rook.starting_position)
-
+    
 def cal_board_index(mouseX,mouseY):
     row = (mouseY - BOARD_UPPER_LENGTH) // BOX_LENGTH
     col = (mouseX - BOARD_SIDE_LENGTH) // BOX_LENGTH
@@ -232,7 +298,7 @@ def cal_screen_position(row,col):
     pieceY = (row * BOX_LENGTH) + BOARD_UPPER_LENGTH + (BOX_LENGTH // 7)
     return (pieceX,pieceY)
 
-# def pieces.check_piece_on_box(row,col):
+# def check_piece_on_box(row,col):
 #     for piece in pieces.alive_pieces:
 #         if piece.row == row and piece.column == col :
 #             return piece
@@ -259,10 +325,7 @@ def move_piece(piece):
 
     piece_seleceted = True
 
-
-
     print(piece.allowedMoves(True))
-
 
     # pygame.display.flip()
     piece_cord = cal_screen_position(piece.row,piece.column)
@@ -271,12 +334,6 @@ def move_piece(piece):
 
     while piece_seleceted:
 
-        # for box in piece.allowedMoves(True):
-        # # #     # pygame.draw.circle(game_board,(45,35,199),[box[0],box[1]],40)
-        #     cord = cal_screen_position(box[0],box[1])
-        # #     # pygame.draw.rect(game_board,'red',[cord[0]-BOARD_SIDE_LENGTH,cord[1],BOX_LENGTH,BOX_LENGTH])
-        #     pygame.draw.circle(game_screen,'blue',[cord[0]+BOX_LENGTH//3,cord[1]+BOX_LENGTH//3],BOX_LENGTH//4)
-        #     pygame.display.flip()
         draw_allowedMoves(piece)
 
         for event2 in pygame.event.get():
@@ -286,8 +343,6 @@ def move_piece(piece):
                 game_boolean = False
                 piece_seleceted = False
                 break
-            
-            # print(f'piece selected={piece_seleceted}')
 
             if event2.type == pygame.MOUSEBUTTONDOWN:
                 mouseX2 = pygame.mouse.get_pos()[0]
@@ -295,16 +350,24 @@ def move_piece(piece):
 
                 cordinate2 = cal_board_index(mouseX2,mouseY2)
 
-
                 if cordinate2 in piece.allowedMoves(True):
+
                     des_piece = pieces.check_piece_on_box(cordinate2[0],cordinate2[1])
+
+                    move = Move(piece.color,piece,[piece.row,piece.column],cordinate2,des_piece)
+                    game_moves.add(move)
+                    game_moves_stack.push(move)
+                    game_moves_temp_stack.clear()
+
                     if des_piece is not None:
                         pieces.alive_pieces.remove(des_piece)
                         eaten_pieces.append(des_piece)
+                        # move.add_eaten_piece(des_piece)
                     piece.setPosition(cordinate2[0],cordinate2[1])
                     if piece.__str__() == 'Pawn':
-                        if not piece.has_moved:
-                            piece.has_moved = True
+                        # if not piece.has_moved:
+                        #     piece.has_moved = True
+                        piece.move_count += 1
                     change_turn()
                 piece_seleceted = False
 
@@ -352,102 +415,58 @@ def move_piece(piece):
 
 def check_condition():
 
-    # if pieceee is not None and consider_destination is not None:
+    for piece in pieces.alive_pieces:
 
-    #     origin_row = pieceee.row
-    #     origin_column = pieceee.column
-        
+        # if pieces.turn != piece.color:
+        for loc in piece.allowedMoves():
 
-    #     # pieces.alive_pieces.remove(pieceee)
-    #     pieceee.row = consider_destination[0]
-    #     pieceee.column = consider_destination[1]
-    #     # pieces.alive_pieces.append(pieceee)
+            dest_piece = pieces.check_piece_on_box(loc[0],loc[1])
 
-    #     #check for check conidtion
-    #     for checking_piece in pieces.alive_pieces:
-    #         if checking_piece.color != pieces.turn:
-    #             for loc in checking_piece.allowedMoves():
-    #                 dest_piece = pieces.check_piece_on_box(loc[0],loc[1])
+            if dest_piece is not None:
+                if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
+                    # dest_piece.setCheck(True)
+                    print('CHECK!!!!!!!')
 
-    #                 if dest_piece is not None:
-    #                     #                                   dest_piece.color == pieces.turn
-    #                     if dest_piece.__str__()=='King' and dest_piece.color != checking_piece.color :
-    #                         # dest_piece.setCheck(True)
-    #                         pieceee.row = origin_row
-    #                         pieceee.column = origin_column
-    #                         print('not allowed to move!')
-    #                         repieces.turn True
-    #     pieceee.row = origin_row
-    #     pieceee.column = origin_column
-    #     repieces.turn False
+def check_Undo(mouseX , mouseY):
     
-    # else:
-    
+    # problem: if soldier undos into first move it should be able to move 2 rooms again
+    # solution: replace "bool has_moved" with "int move_count"
 
-        # for loc in piece.allowedMoves():
+    # problem: eaten piece have to come back to life
+    # solution: add an eaten_piece variable to Move class
 
-        #     dest_piece = pieces.check_piece_on_box(loc[0],loc[1])
+    if mouseX >=50 and mouseX <=150 and mouseY>=50 and mouseY<=150:
+        print('UNDO')
+        try:
+            move:Move = game_moves_stack.pop()
+            game_moves_temp_stack.push(move)
+            move.piece.setPosition(move.origin_loc[0],move.origin_loc[1])
+            if move.piece.__str__() == 'Pawn':
+                move.piece.move_count -= 1
+            if move.eaten_piece is not None:
+                eaten_pieces.remove(move.eaten_piece)
+                pieces.alive_pieces.append(move.eaten_piece)
+            change_turn()
+        except:
+            print('no moves has been made!')
 
-        #     if dest_piece is not None:
-        #         if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
-        #             dest_piece.setCheck(True)
-        #             print('CHECK!!!!!!!')
-        # white_king_found = False
-        # black_king_found = False
+def check_Redo(mouseX , mouseY):
 
-        # white_king:pieces.King
-        # black_king:pieces.King
+    if mouseX >=50 and mouseX <=150 and mouseY>=200 and mouseY<=300:
+        print('REDO')
+        try:
+            move:Move = game_moves_temp_stack.pop()
+            game_moves_stack.push(move)
+            move.piece.setPosition(move.destination[0],move.destination[1])
+            if move.piece.__str__() == 'Pawn':
+                move.piece.move_count += 1
+            if move.eaten_piece is not None:
+                pieces.alive_pieces.remove(move.eaten_piece)
+                eaten_pieces.append(move.eaten_piece)
+            change_turn()
+        except:
+            print('no moves to redo')
 
-        # for piece in pieces.alive_pieces:
-        #     if piece.__str__()=='King':
-        #         if piece.color == 'White':
-        #             white_king = piece
-        #             white_king_found = True
-        #         else:
-        #             black_king = piece
-        #             black_king_found = True
-        #         if white_king_found and black_king_found:
-        #             break
-
-        # if pieces.turn=='White':
-        #     underS_king = white_king
-        # else:
-        #     underS_king = black_king
-
-        
-
-
-                    
-
-        # if kingcheck:
-        #     for piece in pieces.alive_pieces:
-        #         if pieces.turn != piece.color:
-        #             for loc in piece.allowedMoves():
-        #                 dest_piece = pieces.check_piece_on_box(loc[0],loc[1])
-
-        #                 if dest_piece is not None:
-        #                     if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
-        #                         dest_piece.setCheck(True)
-        #                         # print('CHECK!!!!!!!')
-        #                         kingcheck = True
-        #                         break
-        #                     else:
-        #                         # dest_piece.setCheck(False)
-        #                         kingcheck = False
-
-        # print(f'{pieces.turn} King check status = {kingcheck}')
-
-        for piece in pieces.alive_pieces:
-
-            # if pieces.turn != piece.color:
-            for loc in piece.allowedMoves():
-
-                dest_piece = pieces.check_piece_on_box(loc[0],loc[1])
-
-                if dest_piece is not None:
-                    if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
-                        # dest_piece.setCheck(True)
-                        print('CHECK!!!!!!!')
 
 
 #top of board = 228 , 30
@@ -465,7 +484,7 @@ HEIGHT = 680
 game_screen = pygame.display.set_mode([WIDTH,HEIGHT])
 pygame.display.set_caption('Chess Project')
 font_small = pygame.font.Font('freesansbold.ttf',20)
-font_big = pygame.font.Font('freesansbold.ttf',50)
+font_big = pygame.font.Font('freesansbold.ttf',35)
 timer = pygame.time.Clock()
 fps = 60
 
@@ -479,17 +498,20 @@ game_board = pygame.transform.scale(game_board,(600,600))
 # pieces.alive_pieces = []
 eaten_pieces = []
 
+game_moves = Queue(12000)
+
+game_moves_stack = Stack(12000)
+game_moves_temp_stack = Stack(12000)
+
 initialize_pieces()
 #top of board = 228 , 30
 # size of squares = 66
 
 # pieces.turn = 'White'
 
-# pygame.draw.circle(game_board,(53,156,200,50),[200,300],50)
 
 game_boolean = True
 while game_boolean:
-    # pygame.display.flip()
 
     timer.tick(fps)
 
@@ -500,6 +522,12 @@ while game_boolean:
     
 
     draw_pieces()
+
+    pygame.draw.rect(game_screen,'black',[50,50,100,100])
+    game_screen.blit(font_big.render('Undo',True,'white'),(57,85))
+
+    pygame.draw.rect(game_screen,'black',[50,200,100,100])
+    game_screen.blit(font_big.render('Redo',True,'white'),(57,235))
 
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
@@ -515,18 +543,16 @@ while game_boolean:
             mouseY = pygame.mouse.get_pos()[1]
             # print(cal_board_index(mouseX,mouseY))
             cordinate = cal_board_index(mouseX,mouseY)
+
+            check_Undo(mouseX,mouseY)
+            check_Redo(mouseX,mouseY)
+
             piece = pieces.check_piece_on_box(cordinate[0],cordinate[1])
             print(piece)
-            # pygame.draw.rect(game_board,'red',[mouseX,mouseY,BOX_LENGTH,BOX_LENGTH])
+            
             if piece is not None:
          
                 if piece.color == pieces.turn:
-                    # for box in piece.allowedMoves():
-           
-                        # print('rect!!!!!!')
-                        # cord = cal_screen_position(box[0],box[1])
-                        # pygame.draw.rect(game_board,'red',[cord[0]-BOARD_SIDE_LENGTH,cord[1],BOX_LENGTH,BOX_LENGTH])
-                        # pygame.draw.circle(game_board,'blue',[cord[0]-BOARD_SIDE_LENGTH,cord[1]+BOARD_UPPER_LENGTH],BOX_LENGTH//2)
                     
                     # print('----------------\neaten pieces:')
                     # for pie in eaten_pieces:
@@ -534,35 +560,12 @@ while game_boolean:
                     # # print(eaten_pieces)
                     # print('----------------')
 
-                    # for box in piece.allowedMoves():
-                    #     print('circle!!!')
-                    #     pygame.draw.circle(game_board,(45,35,199),cal_screen_position(box[0],box[1]),30)
-                
+                   
                     move_piece(piece)
       
                     check_condition()
 
-                    # piece_seleceted = True
-                    # while piece_seleceted:
-
-                    #     for event2 in pygame.event.get():
-                    #         if event2.type==pygame.QUIT:
-                    #             game_boolean = False
-                    #             piece_seleceted = False
-                    #             break
-                            
-                    #         if event2.type == pygame.MOUSEBUTTONDOWN:
-                    #             mouseX2 = pygame.mouse.get_pos()[0]
-                    #             mouseY2 = pygame.mouse.get_pos()[1]
-                    #             # print(cal_board_index(mouseX,mouseY))
-                    #             cordinate2 = cal_board_index(mouseX2,mouseY2)
-                    #             print(cordinate2)
-                    #             piece.setPosition(cordinate2[0],cordinate2[1])
-                    #             print(f'piece: {piece}')
-                    #             print(f'piece row : {piece.row}')
-                    #             print(f'piece col : {piece.column}')
-                    #             change_pieces.turn()
-                    #             piece_seleceted = False
+                    
                 else:
                     print('NOT YOUR TURN!!')
 
