@@ -359,7 +359,7 @@ def move_piece(piece):
                     des_piece = pieces.check_piece_on_box(cordinate2[0],cordinate2[1])
 
                     move = Move(piece.color,piece,[piece.row,piece.column],cordinate2,des_piece)
-                    # game_moves.add(move)
+                    game_moves.add(move)
                     game_moves_stack.push(move)
                     game_moves_temp_stack.clear()
 
@@ -372,9 +372,19 @@ def move_piece(piece):
                         # if not piece.has_moved:
                         #     piece.has_moved = True
                         piece.move_count += 1
+
+                    for pie in pieces.alive_pieces :
+                        if pie.__str__()=='King' and pie.color==pieces.turn:
+                            if pie.is_checked:
+                                pie.setCheck(False)
+                                print('not check anymore')
+                            break
+
+
                     change_turn()
 
                     check_bool = check_condition()
+                    CheckMate_condition()
                     update_gameLog(['normal move',check_bool])
 
                 piece_seleceted = False
@@ -432,7 +442,7 @@ def check_condition():
 
             if dest_piece is not None:
                 if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
-                    # dest_piece.setCheck(True)
+                    dest_piece.setCheck(True)
                     print('CHECK!!!!!!!')
                     return True
                 
@@ -666,17 +676,21 @@ def update_gameLog(content):
         else:
             crash = ''
 
-        if game_boolean:
-            check_mate = ''
-        else:
-            check_mate = ' Check Mate'
-            sep = True
-
         if check_bool:
             check = ' Check'
             sep = True
         else:
             check = ''
+
+        if game_boolean:
+            check_mate = ''
+        else:
+            if winner=='Draw':
+                check_mate = ' Draw'
+            else:
+                check_mate = ' Check Mate'
+                check = ''
+            sep = True
 
         if sep:
             seperator = '-'
@@ -696,12 +710,87 @@ def update_gameLog(content):
 
     file.close()
 
+def CheckMate_condition():
+    
+    enemy_king:pieces.King
+
+    enemy_moves = []
+
+    for piece in pieces.alive_pieces :
+        if piece.color == pieces.turn:
+            enemy_moves.extend(piece.allowedMoves(True))
+            if piece.__str__()=='King':
+                # print('king initilizied')
+                enemy_king = piece
+        
+
+        # else:
+        #     if piece.__str__()=='King':
+        #         # print('kinge khodi initlized')
+        #         kingeKhodi = piece
+
+    # print(f'enemey move = {enemy_moves} len = {len(enemy_moves)}')
+    # print(f'enemy king = {enemy_king.allowedMoves(True)}')
+                
+    # if enemy_king.is_checked:
+    #     print('ey vaaaaaaaaaay')
+    # print(f'enemy king = {enemy_king.color}  vaziate kish = {enemy_king.is_checked}')
+    # print(f'kinge khodi = {kingeKhodi.color}  vaziate kish = {kingeKhodi.is_checked}')
+
+        
+    if len(enemy_moves)==0:
+        # print('game over')
+        global game_boolean
+        game_boolean = False
+        global winner
+        if enemy_king.is_checked:
+            if pieces.turn=='White':
+                winner = 'Black'
+            else:
+                winner = 'White'
+        else:
+            winner = 'Draw'
+
+def draw_final_board():
+
+    run = True
+
+    while run:
+
+        timer.tick(fps)
+
+        game_screen.fill('dark gray')
+        
+        game_screen.blit(game_board,(200,0))
+
+        draw_pieces()
+
+        draw_eaten_pieces()
+
+        pygame.draw.rect(game_screen,'black',[50,50,100,100])
+        game_screen.blit(font_big.render('Undo',True,'white'),(57,85))
+
+        pygame.draw.rect(game_screen,'black',[50,200,100,100])
+        game_screen.blit(font_big.render('Redo',True,'white'),(57,235))
+
+        if winner == 'Draw':
+            game_screen.blit(font_big.render('Draw !!!',True,'black'),(430,625))
+        else:
+            game_screen.blit(font_big.render(f'Winner is {winner} !',True,'black'),(350,625))
+
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                run = False
+                pygame.quit()
+                sys.exit()
+
+        pygame.display.flip()
         
 
 
 #top of board = 228 , 30
 # size of squares = 66
-
+winner = ''
 BOARD_UPPER_LENGTH = 30
 BOARD_SIDE_LENGTH = 228
 BOX_LENGTH = 68
@@ -771,6 +860,7 @@ while game_boolean:
         if event.type==pygame.QUIT:
             game_boolean = False
             # print("good exit ")
+            pygame.quit()
             sys.exit()
             # break
         
@@ -820,5 +910,15 @@ while game_boolean:
     # game_screen.blit(WL_rook.img,WL_rook.starting_position)
 
     pygame.display.flip()
+
+
+file = open('GameLog.txt','at')
+if winner=='Draw':
+    file.write('Draw !')
+else:
+    file.write(f'Winner is: {winner} !')
+file.close()
+
+draw_final_board()
 
 pygame.quit()

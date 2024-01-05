@@ -1,51 +1,18 @@
 White Pawn to e4 
 Black Pawn to d5 
-White Queen to g4 
-Black Pawn to e4 - Crash
-White Pawn to f3 
-Black Pawn to f3 - Crash
-White Queen to f3 - Crash
-Black Queen to d2 - Crash Check
-White Bishop to d2 - Crash
-Black Bishop to g4 
-White Queen to g4 - Crash
-Black Pawn to f5 
-White Queen to f5 - Crash
-Black Knight to f6 
-White Queen to f6 - Crash
-Black King to d7 
-White Queen to e7 - Crash Check
-Black King to c8 
---Undo Black King back to d7
---Undo White Queen back to f6
---Undo Black King back to e8
---Undo White Queen back to f5
---Undo Black Knight back to g8
---Undo White Queen back to g4
---Undo Black Pawn back to f7
---Undo White Queen back to f3
---Undo Black Bishop back to c8
---Undo White Bishop back to c1
---Undo Black Queen back to d8
---Undo White Queen back to g4
---Undo Black Pawn back to e4
---Undo White Pawn back to f2
---Undo Black Pawn back to d5
---Undo White Queen back to d1
---Undo Black Pawn back to d7
---Undo White Pawn back to e2
---Redo White Pawn on to e4
---Redo Black Pawn on to d5
---Redo White Queen on to g4
---Redo Black Pawn on to e4
---Redo White Pawn on to f3
---Redo Black Pawn on to f3
---Redo White Queen on to f3
---Redo Black Queen on to d2
---Redo White Bishop on to d2
---Redo Black Bishop on to g4
---Redo White Queen on to g4
-Black Pawn to f5 
-White Queen to g7 - Crash
-Black Bishop to g7 - Crash
-White Pawn to g4 
+White Pawn to d5 - Crash
+Black Queen to d5 - Crash
+White Queen to f3 
+Black Queen to a2 - Crash
+White Rook to a2 - Crash
+Black Pawn to e5 
+White Queen to c6 - Check
+Black King to d8 
+White Queen to c7 - Crash Check
+Black King to e8 
+White Pawn to d4 
+Black Pawn to d4 - Crash
+White Bishop to g5 
+Black Pawn to h6 
+White Queen to d8 - Check Mate
+Winner is: White !
