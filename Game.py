@@ -467,6 +467,100 @@ def check_Redo(mouseX , mouseY):
         except:
             print('no moves to redo')
 
+def draw_eaten_pieces():
+
+    game_screen.blit(font_small.render('White eaten pieces',True,'black'),(805,10))
+
+    # pygame.draw.rect(game_screen,'black',[810,40,50,50])
+    # pygame.draw.rect(game_screen,'black',[870,40,50,50])
+    # pygame.draw.rect(game_screen,'black',[930,40,50,50])
+
+    # pygame.draw.rect(game_screen,'black',[810,100,50,50])
+    # pygame.draw.rect(game_screen,'black',[870,100,50,50])
+    # pygame.draw.rect(game_screen,'black',[930,100,50,50])
+
+    # pygame.draw.rect(game_screen,'black',[810,160,50,50])
+    # pygame.draw.rect(game_screen,'black',[870,160,50,50])
+    # pygame.draw.rect(game_screen,'black',[930,160,50,50])
+
+    # pygame.draw.rect(game_screen,'black',[810,220,50,50])
+    # pygame.draw.rect(game_screen,'black',[870,220,50,50])
+    # pygame.draw.rect(game_screen,'black',[930,220,50,50])
+
+    # pygame.draw.rect(game_screen,'black',[810,280,50,50])
+    # pygame.draw.rect(game_screen,'black',[870,280,50,50])
+    # pygame.draw.rect(game_screen,'black',[930,280,50,50])
+
+    game_screen.blit(font_small.render('Black eaten pieces',True,'black'),(805,350))
+
+    # pygame.draw.rect(game_screen,'white',[810,380,50,50])
+    # pygame.draw.rect(game_screen,'white',[870,380,50,50])
+    # pygame.draw.rect(game_screen,'white',[930,380,50,50])
+
+    # pygame.draw.rect(game_screen,'white',[810,440,50,50])
+    # pygame.draw.rect(game_screen,'white',[870,440,50,50])
+    # pygame.draw.rect(game_screen,'white',[930,440,50,50])
+
+    # pygame.draw.rect(game_screen,'white',[810,500,50,50])
+    # pygame.draw.rect(game_screen,'white',[870,500,50,50])
+    # pygame.draw.rect(game_screen,'white',[930,500,50,50])
+
+    # pygame.draw.rect(game_screen,'white',[810,560,50,50])
+    # pygame.draw.rect(game_screen,'white',[870,560,50,50])
+    # pygame.draw.rect(game_screen,'white',[930,560,50,50])
+
+    # pygame.draw.rect(game_screen,'white',[810,620,50,50])
+    # pygame.draw.rect(game_screen,'white',[870,620,50,50])
+    # pygame.draw.rect(game_screen,'white',[930,620,50,50])
+
+    white_grave = [
+        (810,40),
+        (870,40),
+        (930,40),
+        (810,100),
+        (870,100),
+        (930,100),
+        (810,160),
+        (870,160),
+        (930,160),
+        (810,220),
+        (870,220),
+        (930,220),
+        (810,280),
+        (870,280),
+        (930,280)
+    ]
+
+    black_grave = [
+        (810,380),
+        (870,380),
+        (930,380),
+        (810,440),
+        (870,440),
+        (930,440),
+        (810,500),
+        (870,500),
+        (930,500),
+        (810,560),
+        (870,560),
+        (930,560),
+        (810,620),
+        (870,620),
+        (930,620)
+    ]
+
+    i = 0
+    j = 0
+
+    for piece in eaten_pieces:
+        if piece.color == 'White':
+            game_screen.blit(piece.img,white_grave[i])
+            i+=1
+        else:
+            game_screen.blit(piece.img,black_grave[j])
+            j+=1
+
+    
 
 
 #top of board = 228 , 30
@@ -522,6 +616,8 @@ while game_boolean:
     
 
     draw_pieces()
+
+    draw_eaten_pieces()
 
     pygame.draw.rect(game_screen,'black',[50,50,100,100])
     game_screen.blit(font_big.render('Undo',True,'white'),(57,85))
