@@ -1,10 +1,6 @@
-# from . import pieces
 import pieces
-
 import pygame
-
 import sys
-
 import time
 
 class Stack:
@@ -339,10 +335,10 @@ def move_piece(piece):
     pygame.display.flip()
 
     while piece_seleceted:
-        game_screen.fill('dark gray',[15,345,180,100])
+        # game_screen.fill('dark gray',[15,345,180,100])
         check_timer()
         # pygame.display.flip()
-        pygame.display.update([15,345,180,100])
+        # pygame.display.update([15,345,180,100])
 
         draw_allowedMoves(piece)
 
@@ -379,6 +375,13 @@ def move_piece(piece):
                         # if not piece.has_moved:
                         #     piece.has_moved = True
                         piece.move_count += 1
+
+                        if piece.color == 'White':
+                            if piece.row == 0:
+                                pawn_promotion(piece)
+                        else:
+                            if piece.row == 7:
+                                pawn_promotion(piece)
 
                     for pie in pieces.alive_pieces :
                         if pie.__str__()=='King' and pie.color==pieces.turn:
@@ -796,15 +799,17 @@ def draw_final_board():
                 sys.exit()
 
         pygame.display.flip()
-        
+
 def check_timer():
 
     sec = TIMER_DURATION - (time.time() - t0)
     sec = '%.1f' % sec
 
+    game_screen.fill('dark gray',[15,345,180,100])
     pygame.draw.rect(game_screen,'black',[15,345,180,100],2)
     game_screen.blit(font_big.render('Time Left:',True,'black'),(20,350))
     game_screen.blit(font_big.render(sec,True,'black'),(75,400))
+    pygame.display.update([15,345,180,100])
     # pygame.display.flip()
 
     if float(sec) <= 0 :
@@ -812,7 +817,92 @@ def check_timer():
         game_boolean = False
         global winner
         winner = 'Black' if pieces.turn=='White' else 'White'
-    
+
+def pawn_promotion(pawn:pieces.Pawn):
+
+    queen_img = pygame.image.load(f'imgs/{pawn.color}_Queen.png')
+    queen_img = pygame.transform.scale(queen_img, (50,50))
+    knight_img = pygame.image.load(f'imgs/{pawn.color}_Knight.png')
+    knight_img = pygame.transform.scale(knight_img, (50,50))
+    bishop_img = pygame.image.load(f'imgs/{pawn.color}_Bishop.png')
+    bishop_img = pygame.transform.scale(bishop_img, (50,50))
+    rook_img = pygame.image.load(f'imgs/{pawn.color}_Rook.png')
+    rook_img = pygame.transform.scale(rook_img, (50,50))
+
+    piece_selected = False
+    while not piece_selected:
+        game_screen.fill('dark gray',[430,230,140,140])
+        # game_screen.blit(piece.img,cal_screen_position(piece.row,piece.column))
+        game_screen.blit(queen_img,cal_screen_position(3,3))
+        game_screen.blit(knight_img,cal_screen_position(3,4))
+        game_screen.blit(bishop_img,cal_screen_position(4,3))
+        game_screen.blit(rook_img,cal_screen_position(4,4))
+
+        mouseX = pygame.mouse.get_pos()[0]
+        mouseY = pygame.mouse.get_pos()[1]
+
+        if mouseX>=430 and mouseX<=500 and mouseY>=230 and mouseY<=300:
+            pygame.draw.rect(game_screen,'red',[430,230,70,70],2)
+        elif mouseX>=500 and mouseX<=570 and mouseY>=230 and mouseY<=300:
+            pygame.draw.rect(game_screen,'red',[500,230,70,70],2)
+        elif mouseX>=430 and mouseX<=500 and mouseY>=300 and mouseY<=370:
+            pygame.draw.rect(game_screen,'red',[430,300,70,70],2)
+        elif mouseX>=500 and mouseX<=570 and mouseY>=300 and mouseY<=370:
+            pygame.draw.rect(game_screen,'red',[500,300,70,70],2)
+        
+
+        pygame.display.update([430,230,140,140])
+
+        check_timer()
+
+
+        for ev in pygame.event.get():
+            if ev.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if ev.type == pygame.MOUSEBUTTONDOWN:
+
+                promoted_piece = None
+
+                if mouseX>=430 and mouseX<=500 and mouseY>=230 and mouseY<=300:
+                    promoted_piece = pieces.Queen(pawn.color,queen_img,pawn.row,pawn.column)
+                elif mouseX>=500 and mouseX<=570 and mouseY>=230 and mouseY<=300:
+                    promoted_piece = pieces.Knight(pawn.color,knight_img,pawn.row,pawn.column)
+                elif mouseX>=430 and mouseX<=500 and mouseY>=300 and mouseY<=370:
+                    promoted_piece = pieces.Bishop(pawn.color,bishop_img,pawn.row,pawn.column)
+                elif mouseX>=500 and mouseX<=570 and mouseY>=300 and mouseY<=370:
+                    promoted_piece = pieces.Rook(pawn.color,rook_img,pawn.row,pawn.column)
+
+                if promoted_piece is not None:
+                    piece_selected = True
+                    last_move:Move = game_moves_stack.pop()
+                    # last_move.piece = promoted_piece
+                    last_move.eaten_piece = pawn
+                    game_moves_stack.push(last_move)
+                    pieces.alive_pieces.remove(pawn)
+                    pieces.alive_pieces.append(promoted_piece)
+
+
+
+
+    # new_queen_img = 'imgs/White_Queen.png' if pawn.color=='White' else 'imgs/Black_Queen.png'
+                    
+    # new_queen_img = f'imgs/{pawn.color}_Queen.png'
+    # new_queen = pieces.Queen(pawn.color,pygame.image.load(new_queen_img),pawn.row,pawn.column)
+    # new_queen.setScale(pygame.transform.scale(new_queen.img,(50,50)))
+
+    # WL_rook.setScale(pygame.transform.scale(WL_rook.img,(50,50)))
+
+    # last_move:Move = game_moves_stack.pop()
+    # last_move.piece = new_queen
+    # game_moves_stack.push(last_move)
+    # pieces.alive_pieces.remove(pawn)
+    # pieces.alive_pieces.append(new_queen)
+
+    # pygame.draw.rect(game_screen,'red',[430,230,140,140],2)
+
+
 
 #top of board = 228 , 30
 # size of squares = 66
