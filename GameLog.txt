@@ -1,6 +1,39 @@
 White Pawn to e4 
-Black Pawn to f5 
-White Pawn to f5 - Crash
-Black Pawn to g6 
-White Pawn to g6 - Crash
-Black Pawn to g6 - Crash
+Black Pawn to d5 
+White Bishop to a6 
+Black Bishop to h3 
+White Knight to h3 - Crash
+Black Queen to d6 
+White King Castling O-O
+Black Knight to c6 
+White Queen to h5 
+Black King Castling O-O-O
+White Knight to c3 
+Black Pawn to a6 - Crash
+White Pawn to b4 
+--Undo White Pawn back to b2
+--Undo Black Pawn back to b7
+--Undo White Knight back to b1
+--Undo Black King Castling O-O-O
+--Undo White Queen back to d1
+--Undo Black Knight back to b8
+--Undo White King Castling O-O
+--Undo Black Queen back to d8
+--Undo White Knight back to g1
+--Undo Black Bishop back to c8
+--Undo White Bishop back to f1
+--Undo Black Pawn back to d7
+--Undo White Pawn back to e2
+--Redo White Pawn on to e4
+--Redo Black Pawn on to d5
+--Redo White Bishop on to a6
+--Redo Black Bishop on to h3
+--Redo White Knight on to h3
+--Redo Black Queen on to d6
+--Redo White King Castling O-O
+--Redo Black Knight on to c6
+--Redo White Queen on to h5
+--Redo Black King Castling O-O-O
+--Redo White Knight on to c3
+--Redo Black Pawn on to a6
+--Redo White Pawn on to b4

@@ -117,13 +117,13 @@ class Move:
 
 def initialize_pieces():
 
-    WL_rook = pieces.Rook('White',pygame.image.load('imgs/White_Rook.png'),7,0)
+    WL_rook = pieces.Rook('White',pygame.image.load('imgs/White_Rook.png'),7,0,'Left')
     WL_rook.setScale(pygame.transform.scale(WL_rook.img,(50,50)))
     # WL_rook.setStartingPosition(WL_rook.img.get_rect())
     # WL_rook.starting_position.topleft = (250,500)
     pieces.alive_pieces.append(WL_rook)
 
-    WR_rook = pieces.Rook('White',pygame.image.load('imgs/White_Rook.png'),7,7)
+    WR_rook = pieces.Rook('White',pygame.image.load('imgs/White_Rook.png'),7,7,'Right')
     WR_rook.setScale(pygame.transform.scale(WR_rook.img,(50,50)))
     # WR_rook.setStartingPosition(WR_rook.img.get_rect())
     # WR_rook.starting_position.topleft = (700,500)
@@ -218,11 +218,11 @@ def initialize_pieces():
 
 
 
-    BL_rook = pieces.Rook('Black',pygame.image.load('imgs/Black_Rook.png'),0,0)
+    BL_rook = pieces.Rook('Black',pygame.image.load('imgs/Black_Rook.png'),0,0,'Left')
     BL_rook.setScale(pygame.transform.scale(BL_rook.img,(50,50)))
     pieces.alive_pieces.append(BL_rook)
 
-    BR_rook = pieces.Rook('Black',pygame.image.load('imgs/Black_Rook.png'),0,7)
+    BR_rook = pieces.Rook('Black',pygame.image.load('imgs/Black_Rook.png'),0,7,'Right')
     BR_rook.setScale(pygame.transform.scale(BR_rook.img,(50,50)))
     pieces.alive_pieces.append(BR_rook)
 
@@ -372,6 +372,7 @@ def move_piece(piece):
                         pieces.alive_pieces.remove(des_piece)
                         eaten_pieces.append(des_piece)
                     piece.setPosition(cordinate2[0],cordinate2[1])
+                    check_castling(move)
                     global t0
                     t0 = time.time()
                     if piece.__str__() == 'Pawn':
@@ -385,6 +386,9 @@ def move_piece(piece):
                         else:
                             if piece.row == 7:
                                 pawn_promotion(piece)
+
+                    if piece.__str__() == 'Rook' or piece.__str__() == 'King':
+                        piece.move_count += 1
 
                     for pie in pieces.alive_pieces :
                         if pie.__str__()=='King' and pie.color==pieces.turn:
@@ -475,6 +479,9 @@ def check_Undo(mouseX , mouseY):
             move:Move = game_moves_stack.pop()
             game_moves_temp_stack.push(move)
 
+            global t0
+            t0 = time.time()
+
             if move.pawn_promotion:
                 enemy_eaten_piece , promoted_pawn = move.eaten_piece
                 promoted_pawn.setPosition(move.origin_loc[0],move.origin_loc[1])
@@ -486,14 +493,22 @@ def check_Undo(mouseX , mouseY):
                     eaten_pieces.remove(enemy_eaten_piece)
                 # move.piece = promoted_pawn
             elif move.castling:
-                pass
+                rook_origin_loc = {
+                    1 : [7,7],
+                    2 : [7,0],
+                    3 : [0,7],
+                    4 : [0,0]
+                }
+                moven_king , moven_rook , castling_type = move.piece
+                moven_king.setPosition(move.origin_loc[0],move.origin_loc[1])
+                moven_king.move_count -= 1
+                rook_origin_row , rook_origin_col = rook_origin_loc[castling_type]
+                moven_rook.setPosition(rook_origin_row , rook_origin_col)
             elif move.en_passant:
                 pass
             else:
                 move.piece.setPosition(move.origin_loc[0],move.origin_loc[1])
-                global t0
-                t0 = time.time()
-                if move.piece.__str__() == 'Pawn':
+                if move.piece.__str__() == 'Pawn' or move.piece.__str__() == 'Rook' or move.piece.__str__() == 'King':
                     move.piece.move_count -= 1
                 if move.eaten_piece is not None:
                     eaten_pieces.remove(move.eaten_piece)
@@ -510,6 +525,9 @@ def check_Redo(mouseX , mouseY):
         try:
             move:Move = game_moves_temp_stack.pop()
             game_moves_stack.push(move)
+
+            global t0
+            t0 = time.time()
 
             if move.pawn_promotion:
                 # enemy_eaten_piece , promoted_pawn = move.eaten_piece
@@ -531,13 +549,32 @@ def check_Redo(mouseX , mouseY):
                     eaten_pieces.append(enemy_eaten_piece)
 
             elif move.castling:
-                pass
+                # rook_origin_loc = {
+                #     1 : [7,7],
+                #     2 : [7,0],
+                #     3 : [0,7],
+                #     4 : [0,0]
+                # }
+                # moven_king , moven_rook , castling_type = move.piece
+                # moven_king.setPosition(move.origin_loc[0],move.origin_loc[1])
+                # moven_king.move_count -= 1
+                # rook_origin_row , rook_origin_col = rook_origin_loc[castling_type]
+                # moven_rook.setPosition(rook_origin_row , rook_origin_col)
+                rook_dest_dict = {
+                    1 : [7,5],
+                    2 : [7,3],
+                    3 : [0,5],
+                    4 : [0,3],
+                }
+                moven_king , moven_rook , castling_type = move.piece
+                moven_king.setPosition(move.destination[0],move.destination[1])
+                moven_king.move_count += 1
+                rook_dest_row , rook_dest_col = rook_dest_dict[castling_type]
+                moven_rook.setPosition(rook_dest_row , rook_dest_col)
             elif move.en_passant:
                 pass
             else:
                 move.piece.setPosition(move.destination[0],move.destination[1])
-                global t0
-                t0 = time.time()
                 if move.piece.__str__() == 'Pawn':
                     move.piece.move_count += 1
                 if move.eaten_piece is not None:
@@ -756,7 +793,13 @@ def update_gameLog(content):
 
             file.write(f'{last_move.color} {last_move.eaten_piece[1].__str__()} to {moves_dictionary[tuple(last_move.destination)]} promoted to {last_move.piece.__str__()} {seperator}{crash}{check}{check_mate}\n')
         elif last_move.castling:
-            pass
+            castling_type = last_move.piece[2]
+            if castling_type == 1 or castling_type == 3:
+                castling = 'O-O'
+            else:
+                castling = 'O-O-O'
+
+            file.write(f'{last_move.piece[0].color} King Castling {castling}\n')
         elif last_move.en_passant:
             pass
         else:
@@ -800,7 +843,13 @@ def update_gameLog(content):
         if move.pawn_promotion:
             file.write(f'--Undo {move.piece.color} {move.piece.__str__()} depromoted to {move.eaten_piece[1].__str__()} back to {moves_dictionary[tuple(move.origin_loc)]}\n')
         elif move.castling:
-            pass
+            castling_type = move.piece[2]
+            if castling_type == 1 or castling_type == 3:
+                castling = 'O-O'
+            else:
+                castling = 'O-O-O'
+
+            file.write(f'--Undo {move.piece[0].color} King Castling {castling}\n')
         elif move.en_passant:
             pass
         else:
@@ -810,7 +859,13 @@ def update_gameLog(content):
         if move.pawn_promotion:
             file.write(f'--Redo {move.piece.color} {move.eaten_piece[1].__str__()} promoted to {move.piece.__str__()} on to {moves_dictionary[tuple(move.destination)]}\n')
         elif move.castling:
-            pass
+            castling_type = move.piece[2]
+            if castling_type == 1 or castling_type == 3:
+                castling = 'O-O'
+            else:
+                castling = 'O-O-O'
+
+            file.write(f'--Redo {move.piece[0].color} King Castling {castling}\n')
         elif move.en_passant:
             pass
         else:
@@ -1125,11 +1180,65 @@ def pawn_promotion(pawn:pieces.Pawn):
 
     # pygame.draw.rect(game_screen,'red',[430,230,140,140],2)
 
+def check_castling(move:Move):
 
+    origin_row , origin_col = move.origin_loc
+    des_row , des_col = move.destination
+
+    for piece in pieces.alive_pieces:
+        if piece.__str__() == 'Rook':
+            if piece.color == 'White':
+                if piece.type == 'Right':
+                    RW_Rook:pieces.Rook = piece
+                elif piece.type == 'Left':
+                    LW_Rook:pieces.Rook = piece
+            else:
+                if piece.type == 'Right':
+                    RB_Rook:pieces.Rook = piece
+                elif piece.type == 'Left':
+                    LB_Rook:pieces.Rook = piece
+
+    
+    if move.piece.__str__() == 'King':
+
+        if move.piece.color=='White':
+
+            if origin_row==7 and origin_col==4:
+                if des_row==7 and des_col==6:
+                    # right white castling
+                    move.castling = True
+                    # [king, [moven rook , rook starting position , rook destination], castling type]
+                    # castling types:
+                    # right white = 1
+                    # left white = 2
+                    # right black = 3
+                    # left black = 4
+                    # move.piece = [move.piece, [RW_Rook,[7,7],[7,5]],1]
+                    move.piece = [move.piece, RW_Rook, 1]
+                    RW_Rook.setPosition(7,5)
+                elif des_row==7 and des_col==2:
+                    # left white castling
+                    move.castling = True
+                    move.piece = [move.piece, LW_Rook, 2]
+                    LW_Rook.setPosition(7,3)
+                    
+        else:
+
+            if origin_row==0 and origin_col==4:
+                if des_row==0 and des_col==6:
+                    # right black castling 
+                    move.castling = True
+                    move.piece = [move.piece, RB_Rook, 3]
+                    RB_Rook.setPosition(0,5)
+                elif des_row==0 and des_col==2:
+                    # left black castling
+                    move.castling = True
+                    move.piece = [move.piece, LB_Rook, 4]
+                    LB_Rook.setPosition(0,3)
 
 #top of board = 228 , 30
 # size of squares = 66
-winner = ''
+winner = 'no one'
 BOARD_UPPER_LENGTH = 30
 BOARD_SIDE_LENGTH = 228
 BOX_LENGTH = 68
@@ -1260,6 +1369,7 @@ else:
     file.write(f'Winner is: {winner} !')
 file.close()
 
-draw_final_board()
+if winner != 'no one':
+    draw_final_board()
 
 pygame.quit()

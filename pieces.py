@@ -174,6 +174,11 @@ class Pawn(Piece):
 
 class Rook(Piece):
 
+    def __init__(self, color, image, startingRow, startingColumn,type='None') -> None:
+        super().__init__(color, image, startingRow, startingColumn)
+        self.move_count = 0
+        self.type = type
+
     def allowedMoves(self,filter=False):
 
         #import 
@@ -671,6 +676,7 @@ class King(Piece):
     def __init__(self, color, image, startingRow, startingColumn) -> None:
         super().__init__(color, image, startingRow, startingColumn)
         self.is_checked = False
+        self.move_count = 0
 
     def setCheck(self,check_sit):
         self.is_checked = check_sit
@@ -685,11 +691,17 @@ class King(Piece):
         all_locs_in_pattern.append([self.row - 1, self.column - 0])
         all_locs_in_pattern.append([self.row - 1, self.column + 1])
         all_locs_in_pattern.append([self.row - 0, self.column - 1])
-        all_locs_in_pattern.append([self.row - 0, self.column + 0])
+        # all_locs_in_pattern.append([self.row - 0, self.column + 0])
         all_locs_in_pattern.append([self.row - 0, self.column + 1])
         all_locs_in_pattern.append([self.row + 1, self.column - 1])
         all_locs_in_pattern.append([self.row + 1, self.column - 0])
         all_locs_in_pattern.append([self.row + 1, self.column + 1])
+
+        # if self.castling_condition('Right'):
+        #     all_locs_in_pattern.append([7,6])
+        # if self.castling_condition('Left'):
+        #     all_locs_in_pattern.append([7,2])
+        
         
         for loc in all_locs_in_pattern:
 
@@ -707,9 +719,75 @@ class King(Piece):
                 if not cause_check(self,check_loc):
                    
                     mod_allowed_locs.append(check_loc)
+            
+            if self.color=='White':
+                if self.castling_condition('Right'):
+                    mod_allowed_locs.append([7,6])
+                if self.castling_condition('Left'):
+                    mod_allowed_locs.append([7,2])
+            else:
+                if self.castling_condition('Right'):
+                    mod_allowed_locs.append([0,6])
+                if self.castling_condition('Left'):
+                    mod_allowed_locs.append([0,2])
+
+
             return mod_allowed_locs
         else:
             return allowed_locs
+        
+    def castling_condition(self,mode):
+        if mode == 'Right':
+            if self.color == 'White':
+                rook_loc = check_piece_on_box(7,5)
+                king_loc = check_piece_on_box(7,6)
+                if rook_loc is None and king_loc is None:
+                    if not cause_check(self,[7,5]) and not cause_check(self,[7,6]):
+                        for piece in alive_pieces:
+                            if piece.color == self.color and piece.__str__()=='Rook' and piece.type=='Right':
+                                WR_Rook:Rook = piece
+                                break
+                        if self.move_count==0 and WR_Rook.move_count==0 and not self.is_checked:
+                            return True
+                return False
+            else:
+                rook_loc = check_piece_on_box(0,5)
+                king_loc = check_piece_on_box(0,6)
+                if rook_loc is None and king_loc is None:
+                    if not cause_check(self,[0,5]) and not cause_check(self,[0,6]):
+                        for piece in alive_pieces:
+                            if piece.color == self.color and piece.__str__()=='Rook' and piece.type=='Right':
+                                BR_Rook:Rook = piece
+                                break
+                        if self.move_count==0 and BR_Rook.move_count==0 and not self.is_checked:
+                            return True
+                return False
+        elif mode == 'Left':
+            if self.color == 'White':
+                rook_loc = check_piece_on_box(7,3)
+                king_loc = check_piece_on_box(7,2)
+                if rook_loc is None and king_loc is None:
+                    if not cause_check(self,[7,3]) and not cause_check(self,[7,2]):
+                        for piece in alive_pieces:
+                            if piece.color == self.color and piece.__str__()=='Rook' and piece.type=='Left':
+                                WL_Rook:Rook = piece
+                                break
+                        if self.move_count==0 and WL_Rook.move_count==0 and not self.is_checked:
+                            return True
+                return False
+            else:
+                rook_loc = check_piece_on_box(0,3)
+                king_loc = check_piece_on_box(0,2)
+                if rook_loc is None and king_loc is None:
+                    if not cause_check(self,[0,3]) and not cause_check(self,[0,2]):
+                        for piece in alive_pieces:
+                            if piece.color == self.color and piece.__str__()=='Rook' and piece.type=='Left':
+                                BL_Rook:Rook = piece
+                                break
+                        if self.move_count==0 and BL_Rook.move_count==0 and not self.is_checked:
+                            return True
+                return False
+
 
     def __str__(self) -> str:
         return 'King'
