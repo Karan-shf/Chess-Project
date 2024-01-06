@@ -1,18 +1,46 @@
 White Pawn to e4 
-Black Pawn to d5 
-White Pawn to d5 - Crash
-Black Queen to d5 - Crash
-White Queen to f3 
-Black Queen to a2 - Crash
-White Rook to a2 - Crash
 Black Pawn to e5 
-White Queen to c6 - Check
-Black King to d8 
-White Queen to c7 - Crash Check
+White Knight to f3 
+Black Knight to f6 
+White Queen to e2 
+Black Knight to e4 - Crash
+White Queen to e4 - Crash
+Black Pawn to d6 
+White Queen to h7 - Crash
+Black Pawn to g6 
+White Queen to h8 - Crash
+Black King to d7 
+White Queen to f8 - Crash
+Black King to c6 
+White Queen to d8 - Crash
+Black King to b6 
+White Queen to c8 - Crash
+Black King to c6 
+White Queen to b7 - Crash Check
+Black King to d7 
+White Pawn to a4 
 Black King to e8 
+White Rook to a3 
+Black King to f8 
+White Queen to c7 - Crash
+Black King to g8 
+White Knight to e5 - Crash
+Black King to h8 
+White Rook to h3 - Check
+Black King to g8 
+White Knight to f7 - Crash
+Black King to g7 
+White Knight to e5 - Check
+Black King to g8 
+White Rook to g3 
+Black King to h8 
+White Rook to g6 - Crash
+Black Pawn to d5 
 White Pawn to d4 
-Black Pawn to d4 - Crash
-White Bishop to g5 
-Black Pawn to h6 
-White Queen to d8 - Check Mate
-Winner is: White !
+Black Pawn to a6 
+White Bishop to a6 - Crash
+Black Knight to c6 
+White Knight to c6 - Crash
+Black Rook to b8 
+White Knight to b8 - Crash Draw
+Draw !

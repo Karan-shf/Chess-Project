@@ -5,6 +5,8 @@ import pygame
 
 import sys
 
+import time
+
 class Stack:
 
     def __init__(self,max) -> None:
@@ -329,7 +331,7 @@ def move_piece(piece):
 
     piece_seleceted = True
 
-    print(piece.allowedMoves(True))
+    # print(piece.allowedMoves(True))
 
     # pygame.display.flip()
     piece_cord = cal_screen_position(piece.row,piece.column)
@@ -337,6 +339,10 @@ def move_piece(piece):
     pygame.display.flip()
 
     while piece_seleceted:
+        game_screen.fill('dark gray',[15,345,180,100])
+        check_timer()
+        # pygame.display.flip()
+        pygame.display.update([15,345,180,100])
 
         draw_allowedMoves(piece)
 
@@ -366,8 +372,9 @@ def move_piece(piece):
                     if des_piece is not None:
                         pieces.alive_pieces.remove(des_piece)
                         eaten_pieces.append(des_piece)
-                        # move.add_eaten_piece(des_piece)
                     piece.setPosition(cordinate2[0],cordinate2[1])
+                    global t0
+                    t0 = time.time()
                     if piece.__str__() == 'Pawn':
                         # if not piece.has_moved:
                         #     piece.has_moved = True
@@ -462,6 +469,8 @@ def check_Undo(mouseX , mouseY):
             move:Move = game_moves_stack.pop()
             game_moves_temp_stack.push(move)
             move.piece.setPosition(move.origin_loc[0],move.origin_loc[1])
+            global t0
+            t0 = time.time()
             if move.piece.__str__() == 'Pawn':
                 move.piece.move_count -= 1
             if move.eaten_piece is not None:
@@ -480,6 +489,8 @@ def check_Redo(mouseX , mouseY):
             move:Move = game_moves_temp_stack.pop()
             game_moves_stack.push(move)
             move.piece.setPosition(move.destination[0],move.destination[1])
+            global t0
+            t0 = time.time()
             if move.piece.__str__() == 'Pawn':
                 move.piece.move_count += 1
             if move.eaten_piece is not None:
@@ -786,7 +797,22 @@ def draw_final_board():
 
         pygame.display.flip()
         
+def check_timer():
 
+    sec = TIMER_DURATION - (time.time() - t0)
+    sec = '%.1f' % sec
+
+    pygame.draw.rect(game_screen,'black',[15,345,180,100],2)
+    game_screen.blit(font_big.render('Time Left:',True,'black'),(20,350))
+    game_screen.blit(font_big.render(sec,True,'black'),(75,400))
+    # pygame.display.flip()
+
+    if float(sec) <= 0 :
+        global game_boolean
+        game_boolean = False
+        global winner
+        winner = 'Black' if pieces.turn=='White' else 'White'
+    
 
 #top of board = 228 , 30
 # size of squares = 66
@@ -794,6 +820,7 @@ winner = ''
 BOARD_UPPER_LENGTH = 30
 BOARD_SIDE_LENGTH = 228
 BOX_LENGTH = 68
+TIMER_DURATION = 30
 
 pygame.init()
 
@@ -832,6 +859,7 @@ initialize_pieces()
 file = open('GameLog.txt','wt')
 file.close()
 
+t0 = time.time()
 
 game_boolean = True
 while game_boolean:
@@ -840,13 +868,12 @@ while game_boolean:
 
     game_screen.fill('dark gray')
     
-
     game_screen.blit(game_board,(200,0))
     
-
     draw_pieces()
 
     draw_eaten_pieces()
+
 
     pygame.draw.rect(game_screen,'black',[50,50,100,100])
     game_screen.blit(font_big.render('Undo',True,'white'),(57,85))
@@ -908,6 +935,7 @@ while game_boolean:
     # initialize_pieces()
 
     # game_screen.blit(WL_rook.img,WL_rook.starting_position)
+    check_timer()
 
     pygame.display.flip()
 
