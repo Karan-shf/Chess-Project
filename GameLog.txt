@@ -1,12 +1,4 @@
 White Pawn to e4 
-Black Pawn to f5 
-White Pawn to f5 - Crash
-Black Pawn to e6 
-White Pawn to e6 - Crash
-Black Pawn to g6 
-White Pawn to d7 - Crash Check
-Black King to f7 
-White Pawn to c8 - Crash
-Black King to g7 
-White Queen to f5 
-Winner is: White !
+Black Pawn to d5 
+--Meow Black Pawn back to d7
+--Meow White Pawn back to e2

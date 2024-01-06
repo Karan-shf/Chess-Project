@@ -105,12 +105,15 @@ class Queue:
 
 class Move:
 
-    def __init__(self,color,piece,origin_loc,destination,eaten_piece) -> None:
+    def __init__(self,color,piece,origin_loc,destination,eaten_piece,pawn_promotion=False,castling=False,en_passant=False) -> None:
         self.color = color
         self.piece = piece
         self.origin_loc = origin_loc
         self.destination = destination
         self.eaten_piece = eaten_piece
+        self.pawn_promotion = pawn_promotion
+        self.castling = castling
+        self.en_passant = en_passant
 
 def initialize_pieces():
 
@@ -471,14 +474,30 @@ def check_Undo(mouseX , mouseY):
         try:
             move:Move = game_moves_stack.pop()
             game_moves_temp_stack.push(move)
-            move.piece.setPosition(move.origin_loc[0],move.origin_loc[1])
-            global t0
-            t0 = time.time()
-            if move.piece.__str__() == 'Pawn':
-                move.piece.move_count -= 1
-            if move.eaten_piece is not None:
-                eaten_pieces.remove(move.eaten_piece)
-                pieces.alive_pieces.append(move.eaten_piece)
+
+            if move.pawn_promotion:
+                enemy_eaten_piece , promoted_pawn = move.eaten_piece
+                promoted_pawn.setPosition(move.origin_loc[0],move.origin_loc[1])
+                promoted_pawn.move_count -= 1
+                pieces.alive_pieces.remove(move.piece)
+                pieces.alive_pieces.append(promoted_pawn)
+                if enemy_eaten_piece is not None:
+                    pieces.alive_pieces.append(enemy_eaten_piece)
+                    eaten_pieces.remove(enemy_eaten_piece)
+                # move.piece = promoted_pawn
+            elif move.castling:
+                pass
+            elif move.en_passant:
+                pass
+            else:
+                move.piece.setPosition(move.origin_loc[0],move.origin_loc[1])
+                global t0
+                t0 = time.time()
+                if move.piece.__str__() == 'Pawn':
+                    move.piece.move_count -= 1
+                if move.eaten_piece is not None:
+                    eaten_pieces.remove(move.eaten_piece)
+                    pieces.alive_pieces.append(move.eaten_piece)
             change_turn()
             update_gameLog(['undo',move])
         except:
@@ -491,14 +510,39 @@ def check_Redo(mouseX , mouseY):
         try:
             move:Move = game_moves_temp_stack.pop()
             game_moves_stack.push(move)
-            move.piece.setPosition(move.destination[0],move.destination[1])
-            global t0
-            t0 = time.time()
-            if move.piece.__str__() == 'Pawn':
-                move.piece.move_count += 1
-            if move.eaten_piece is not None:
-                pieces.alive_pieces.remove(move.eaten_piece)
-                eaten_pieces.append(move.eaten_piece)
+
+            if move.pawn_promotion:
+                # enemy_eaten_piece , promoted_pawn = move.eaten_piece
+                # promoted_pawn.setPosition(move.origin_loc[0],move.origin_loc[1])
+                # promoted_pawn.move_count -= 1
+                # pieces.alive_pieces.remove(move.piece)
+                # pieces.alive_pieces.append(promoted_pawn)
+                # if enemy_eaten_piece is not None:
+                #     pieces.alive_pieces.append(enemy_eaten_piece)
+                #     eaten_pieces.remove(enemy_eaten_piece)
+                # move.piece = promoted_pawn
+                enemy_eaten_piece , promoted_pawn = move.eaten_piece
+                promoted_pawn.setPosition(move.destination[0],move.destination[1])
+                promoted_pawn.move_count += 1
+                pieces.alive_pieces.remove(promoted_pawn)
+                pieces.alive_pieces.append(move.piece)
+                if enemy_eaten_piece is not None:
+                    pieces.alive_pieces.remove(enemy_eaten_piece)
+                    eaten_pieces.append(enemy_eaten_piece)
+
+            elif move.castling:
+                pass
+            elif move.en_passant:
+                pass
+            else:
+                move.piece.setPosition(move.destination[0],move.destination[1])
+                global t0
+                t0 = time.time()
+                if move.piece.__str__() == 'Pawn':
+                    move.piece.move_count += 1
+                if move.eaten_piece is not None:
+                    pieces.alive_pieces.remove(move.eaten_piece)
+                    eaten_pieces.append(move.eaten_piece)
             change_turn()
             update_gameLog(['redo',move])
         except:
@@ -668,14 +712,14 @@ def update_gameLog(content):
 
     mode , context = content
 
-    file = open('GameLog.txt','at')
+    file = open('GameLog.txt','at') 
 
     if mode=='normal move':
 
 
         # To DO:
         # - castling
-        # - enpawsan
+        # - en passant
 
     
         check_bool = context
@@ -683,6 +727,8 @@ def update_gameLog(content):
         last_move = game_moves_stack.properties[game_moves_stack.top]
 
         sep = False
+        # iffff=Move(2,2,2,2,2,2,2,2)
+        # iffff.pawn_promotion
 
         if last_move.eaten_piece is not None:
             crash = ' Crash'
@@ -877,8 +923,9 @@ def pawn_promotion(pawn:pieces.Pawn):
                 if promoted_piece is not None:
                     piece_selected = True
                     last_move:Move = game_moves_stack.pop()
-                    # last_move.piece = promoted_piece
-                    last_move.eaten_piece = pawn
+                    last_move.pawn_promotion = True
+                    last_move.piece = promoted_piece
+                    last_move.eaten_piece = [last_move.eaten_piece,pawn]
                     game_moves_stack.push(last_move)
                     pieces.alive_pieces.remove(pawn)
                     pieces.alive_pieces.append(promoted_piece)
