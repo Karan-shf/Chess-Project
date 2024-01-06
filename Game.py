@@ -712,60 +712,236 @@ def update_gameLog(content):
 
     mode , context = content
 
-    file = open('GameLog.txt','at') 
+
+    file = open('GameLog.txt','at')
 
     if mode=='normal move':
 
-
-        # To DO:
-        # - castling
-        # - en passant
-
-    
-        check_bool = context
-        
         last_move = game_moves_stack.properties[game_moves_stack.top]
 
-        sep = False
-        # iffff=Move(2,2,2,2,2,2,2,2)
-        # iffff.pawn_promotion
+        if last_move.pawn_promotion:
 
-        if last_move.eaten_piece is not None:
-            crash = ' Crash'
-            sep = True
-        else:
-            crash = ''
+            check_bool = context
+            
+            # last_move = game_moves_stack.properties[game_moves_stack.top]
 
-        if check_bool:
-            check = ' Check'
-            sep = True
-        else:
-            check = ''
+            sep = False
 
-        if game_boolean:
-            check_mate = ''
-        else:
-            if winner=='Draw':
-                check_mate = ' Draw'
+            if last_move.eaten_piece[0] is not None:
+                crash = ' Crash'
+                sep = True
             else:
-                check_mate = ' Check Mate'
+                crash = ''
+
+            if check_bool:
+                check = ' Check'
+                sep = True
+            else:
                 check = ''
-            sep = True
 
-        if sep:
-            seperator = '-'
+            if game_boolean:
+                check_mate = ''
+            else:
+                if winner=='Draw':
+                    check_mate = ' Draw'
+                else:
+                    check_mate = ' Check Mate'
+                    check = ''
+                sep = True
+
+            if sep:
+                seperator = '-'
+            else:
+                seperator = ''
+
+            file.write(f'{last_move.color} {last_move.eaten_piece[1].__str__()} to {moves_dictionary[tuple(last_move.destination)]} promoted to {last_move.piece.__str__()} {seperator}{crash}{check}{check_mate}\n')
+        elif last_move.castling:
+            pass
+        elif last_move.en_passant:
+            pass
         else:
-            seperator = ''
+            check_bool = context
+            
+            # last_move = game_moves_stack.properties[game_moves_stack.top]
 
-        file.write(f'{last_move.color} {last_move.piece.__str__()} to {moves_dictionary[tuple(last_move.destination)]} {seperator}{crash}{check}{check_mate}\n')
+            sep = False
+
+            if last_move.eaten_piece is not None:
+                crash = ' Crash'
+                sep = True
+            else:
+                crash = ''
+
+            if check_bool:
+                check = ' Check'
+                sep = True
+            else:
+                check = ''
+
+            if game_boolean:
+                check_mate = ''
+            else:
+                if winner=='Draw':
+                    check_mate = ' Draw'
+                else:
+                    check_mate = ' Check Mate'
+                    check = ''
+                sep = True
+
+            if sep:
+                seperator = '-'
+            else:
+                seperator = ''
+
+            file.write(f'{last_move.color} {last_move.piece.__str__()} to {moves_dictionary[tuple(last_move.destination)]} {seperator}{crash}{check}{check_mate}\n')
 
     elif mode == 'undo':
         move = context
-        file.write(f'--Undo {move.piece.color} {move.piece.__str__()} back to {moves_dictionary[tuple(move.origin_loc)]}\n')
+        if move.pawn_promotion:
+            file.write(f'--Undo {move.piece.color} {move.piece.__str__()} depromoted to {move.eaten_piece[1].__str__()} back to {moves_dictionary[tuple(move.origin_loc)]}\n')
+        elif move.castling:
+            pass
+        elif move.en_passant:
+            pass
+        else:
+            file.write(f'--Undo {move.piece.color} {move.piece.__str__()} back to {moves_dictionary[tuple(move.origin_loc)]}\n')
     elif mode =='redo':
         move = context
-        file.write(f'--Redo {move.piece.color} {move.piece.__str__()} on to {moves_dictionary[tuple(move.destination)]}\n')
+        if move.pawn_promotion:
+            file.write(f'--Redo {move.piece.color} {move.eaten_piece[1].__str__()} promoted to {move.piece.__str__()} on to {moves_dictionary[tuple(move.destination)]}\n')
+        elif move.castling:
+            pass
+        elif move.en_passant:
+            pass
+        else:
+            file.write(f'--Redo {move.piece.color} {move.piece.__str__()} on to {moves_dictionary[tuple(move.destination)]}\n')
 
+        # if mode=='normal move':
+        #     (f'{last_move.color} {last_move.piece.__str__()} to {moves_dictionary[tuple(last_move.destination)]} {seperator}{crash}{check}{check_mate}\n')
+        
+
+        # elif mode == 'undo':
+        #     print('normal undo')
+        #     move = context
+        #     file.write(f'--Undo {move.piece.color} {move.piece.__str__()} back to {moves_dictionary[tuple(move.origin_loc)]}\n')
+        # elif mode =='redo':
+        #     move = context
+        #     file.write(f'--Redo {move.piece.color} {move.piece.__str__()} on to {moves_dictionary[tuple(move.destination)]}\n')
+
+
+
+
+
+
+
+
+
+
+    # if last_move.pawn_promotion:
+
+    #     if mode=='normal move':
+        
+    #         check_bool = context
+            
+    #         # last_move = game_moves_stack.properties[game_moves_stack.top]
+
+    #         sep = False
+    #         # iffff=Move(2,2,2,2,2,2,2,2)
+    #         # iffff.pawn_promotion
+    #         # iffff.castling
+    #         # iffff.en_passant
+
+    #         if last_move.eaten_piece[0] is not None:
+    #             crash = ' Crash'
+    #             sep = True
+    #         else:
+    #             crash = ''
+
+    #         if check_bool:
+    #             check = ' Check'
+    #             sep = True
+    #         else:
+    #             check = ''
+
+    #         if game_boolean:
+    #             check_mate = ''
+    #         else:
+    #             if winner=='Draw':
+    #                 check_mate = ' Draw'
+    #             else:
+    #                 check_mate = ' Check Mate'
+    #                 check = ''
+    #             sep = True
+
+    #         if sep:
+    #             seperator = '-'
+    #         else:
+    #             seperator = ''
+
+    #         file.write(f'{last_move.color} {last_move.eaten_piece[1].__str__()} to {moves_dictionary[tuple(last_move.destination)]} promoted to {last_move.piece.__str__()} {seperator}{crash}{check}{check_mate}\n')
+
+    #     elif mode == 'undo':
+    #         print('undo pawn promotion')
+    #         move = context
+    #         file.write(f'--Undo {move.piece.color} {move.piece.__str__()} depromoted to {move.eaten_piece[1].__str__()} back to {moves_dictionary[tuple(move.origin_loc)]}\n')
+    #     elif mode =='redo':
+    #         move = context
+    #         file.write(f'--Redo {move.piece.color} {move.eaten_piece[1].__str__()} promoted to {move.piece.__str__()} on to {moves_dictionary[tuple(move.destination)]}\n')
+        
+    # elif last_move.castling:
+    #     pass
+    # elif last_move.en_passant:
+    #     pass
+    # else:
+
+    #     if mode=='normal move':
+        
+    #         check_bool = context
+            
+    #         # last_move = game_moves_stack.properties[game_moves_stack.top]
+
+    #         sep = False
+    #         # iffff=Move(2,2,2,2,2,2,2,2)
+    #         # iffff.pawn_promotion
+    #         # iffff.castling
+    #         # iffff.en_passant
+
+    #         if last_move.eaten_piece is not None:
+    #             crash = ' Crash'
+    #             sep = True
+    #         else:
+    #             crash = ''
+
+    #         if check_bool:
+    #             check = ' Check'
+    #             sep = True
+    #         else:
+    #             check = ''
+
+    #         if game_boolean:
+    #             check_mate = ''
+    #         else:
+    #             if winner=='Draw':
+    #                 check_mate = ' Draw'
+    #             else:
+    #                 check_mate = ' Check Mate'
+    #                 check = ''
+    #             sep = True
+
+    #         if sep:
+    #             seperator = '-'
+    #         else:
+    #             seperator = ''
+
+    #         file.write(f'{last_move.color} {last_move.piece.__str__()} to {moves_dictionary[tuple(last_move.destination)]} {seperator}{crash}{check}{check_mate}\n')
+
+    #     elif mode == 'undo':
+    #         print('normal undo')
+    #         move = context
+    #         file.write(f'--Undo {move.piece.color} {move.piece.__str__()} back to {moves_dictionary[tuple(move.origin_loc)]}\n')
+    #     elif mode =='redo':
+    #         move = context
+    #         file.write(f'--Redo {move.piece.color} {move.piece.__str__()} on to {moves_dictionary[tuple(move.destination)]}\n')
 
 
     file.close()
