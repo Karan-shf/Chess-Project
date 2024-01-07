@@ -157,6 +157,36 @@ class Pawn(Piece):
                     # alive_pieces.remove(des_piece)
                     # eaten_pieces.append(des_piece)
 
+        # en passant conditions
+        if self.color == 'White':
+            if self.row == 3:
+                left_house = check_piece_on_box(3,self.column-1)
+                right_house = check_piece_on_box(3,self.column+1)
+
+                if left_house is not None :
+                    if left_house.__str__()=='Pawn':
+                        if left_house.move_count==1:
+                            allowed_locs.append([2,self.column-1])
+
+                if right_house is not None :
+                    if right_house.__str__()=='Pawn':
+                        if right_house.move_count==1:
+                            allowed_locs.append([2,self.column+1])
+        else:
+            if self.row == 4:
+                left_house = check_piece_on_box(4,self.column-1)
+                right_house = check_piece_on_box(4,self.column+1)
+
+                if left_house is not None :
+                    if left_house.__str__()=='Pawn':
+                        if left_house.move_count==1:
+                            allowed_locs.append([5,self.column-1])
+
+                if right_house is not None :
+                    if right_house.__str__()=='Pawn':
+                        if right_house.move_count==1:
+                            allowed_locs.append([5,self.column+1])
+
         # return allowed_locs
         if filter:
            

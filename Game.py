@@ -380,6 +380,8 @@ def move_piece(piece):
                         #     piece.has_moved = True
                         piece.move_count += 1
 
+                        check_en_passant(move)
+
                         if piece.color == 'White':
                             if piece.row == 0:
                                 pawn_promotion(piece)
@@ -505,7 +507,10 @@ def check_Undo(mouseX , mouseY):
                 rook_origin_row , rook_origin_col = rook_origin_loc[castling_type]
                 moven_rook.setPosition(rook_origin_row , rook_origin_col)
             elif move.en_passant:
-                pass
+                move.piece.setPosition(move.origin_loc[0],move.origin_loc[1])
+                move.piece.move_count -= 1
+                eaten_pieces.remove(move.eaten_piece)
+                pieces.alive_pieces.append(move.eaten_piece)
             else:
                 move.piece.setPosition(move.origin_loc[0],move.origin_loc[1])
                 if move.piece.__str__() == 'Pawn' or move.piece.__str__() == 'Rook' or move.piece.__str__() == 'King':
@@ -572,7 +577,10 @@ def check_Redo(mouseX , mouseY):
                 rook_dest_row , rook_dest_col = rook_dest_dict[castling_type]
                 moven_rook.setPosition(rook_dest_row , rook_dest_col)
             elif move.en_passant:
-                pass
+                move.piece.setPosition(move.destination[0],move.destination[1])
+                move.piece.move_count += 1
+                pieces.alive_pieces.remove(move.eaten_piece)
+                eaten_pieces.append(move.eaten_piece)
             else:
                 move.piece.setPosition(move.destination[0],move.destination[1])
                 if move.piece.__str__() == 'Pawn':
@@ -801,7 +809,27 @@ def update_gameLog(content):
 
             file.write(f'{last_move.piece[0].color} King Castling {castling}\n')
         elif last_move.en_passant:
-            pass
+
+            check_bool = context
+            
+            # last_move = game_moves_stack.properties[game_moves_stack.top]
+
+            if check_bool:
+                check = ' Check'
+            else:
+                check = ''
+
+            if game_boolean:
+                check_mate = ''
+            else:
+                if winner=='Draw':
+                    check_mate = ' Draw'
+                else:
+                    check_mate = ' Check Mate'
+                    check = ''
+
+            file.write(f'{last_move.color} {last_move.piece.__str__()} to {moves_dictionary[tuple(last_move.destination)]} - En Passant{check}{check_mate}\n')
+            
         else:
             check_bool = context
             
@@ -851,7 +879,7 @@ def update_gameLog(content):
 
             file.write(f'--Undo {move.piece[0].color} King Castling {castling}\n')
         elif move.en_passant:
-            pass
+            file.write(f'--Undo En Passant {move.piece.color} {move.piece.__str__()} back to {moves_dictionary[tuple(move.origin_loc)]}\n')
         else:
             file.write(f'--Undo {move.piece.color} {move.piece.__str__()} back to {moves_dictionary[tuple(move.origin_loc)]}\n')
     elif mode =='redo':
@@ -867,7 +895,7 @@ def update_gameLog(content):
 
             file.write(f'--Redo {move.piece[0].color} King Castling {castling}\n')
         elif move.en_passant:
-            pass
+            file.write(f'--Redo En Passant {move.piece.color} {move.piece.__str__()} on to {moves_dictionary[tuple(move.destination)]}\n')
         else:
             file.write(f'--Redo {move.piece.color} {move.piece.__str__()} on to {moves_dictionary[tuple(move.destination)]}\n')
 
@@ -1235,6 +1263,16 @@ def check_castling(move:Move):
                     move.castling = True
                     move.piece = [move.piece, LB_Rook, 4]
                     LB_Rook.setPosition(0,3)
+
+def check_en_passant(move:Move):
+
+    if move.origin_loc[1] != move.destination[1] and move.eaten_piece is None:
+        move.en_passant = True
+        move.eaten_piece = pieces.check_piece_on_box(move.origin_loc[0],move.destination[1])
+        pieces.alive_pieces.remove(move.eaten_piece)
+        eaten_pieces.append(move.eaten_piece)
+        
+
 
 #top of board = 228 , 30
 # size of squares = 66
