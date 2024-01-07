@@ -1,4 +1,6 @@
-# from . #import # #import # from .import check_piece_on_box
+import dataStructures
+
+
 alive_pieces = []
 turn = 'White'
 
@@ -158,6 +160,7 @@ class Pawn(Piece):
                     # eaten_pieces.append(des_piece)
 
         # en passant conditions
+        last_move = dataStructures.game_moves_stack.properties[dataStructures.game_moves_stack.top]
         if self.color == 'White':
             if self.row == 3:
                 left_house = check_piece_on_box(3,self.column-1)
@@ -166,12 +169,14 @@ class Pawn(Piece):
                 if left_house is not None :
                     if left_house.__str__()=='Pawn':
                         if left_house.move_count==1:
-                            allowed_locs.append([2,self.column-1])
+                            if last_move.piece is left_house:
+                                allowed_locs.append([2,self.column-1])
 
                 if right_house is not None :
                     if right_house.__str__()=='Pawn':
                         if right_house.move_count==1:
-                            allowed_locs.append([2,self.column+1])
+                            if last_move.piece is right_house:
+                                allowed_locs.append([2,self.column+1])
         else:
             if self.row == 4:
                 left_house = check_piece_on_box(4,self.column-1)
@@ -180,12 +185,14 @@ class Pawn(Piece):
                 if left_house is not None :
                     if left_house.__str__()=='Pawn':
                         if left_house.move_count==1:
-                            allowed_locs.append([5,self.column-1])
+                            if last_move.piece is left_house:
+                                allowed_locs.append([5,self.column-1])
 
                 if right_house is not None :
                     if right_house.__str__()=='Pawn':
                         if right_house.move_count==1:
-                            allowed_locs.append([5,self.column+1])
+                            if last_move.piece is right_house:
+                                allowed_locs.append([5,self.column+1])
 
         # return allowed_locs
         if filter:

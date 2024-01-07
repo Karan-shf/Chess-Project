@@ -1,107 +1,108 @@
 import pieces
+import dataStructures
 import pygame
 import sys
 import time
 
-class Stack:
+# class Stack:
 
-    def __init__(self,max) -> None:
-        self.top = -1
-        self.max = max
-        self.properties = []
-        for i in range(max):
-            self.properties.append(None)
+#     def __init__(self,max) -> None:
+#         self.top = -1
+#         self.max = max
+#         self.properties = []
+#         for i in range(max):
+#             self.properties.append(None)
 
-    def push(self,value):
+#     def push(self,value):
         
-        if self.isFull():
-            raise Exception('Stack is Full')
-        else:
-            self.top += 1
-            self.properties[self.top] = value
+#         if self.isFull():
+#             raise Exception('Stack is Full')
+#         else:
+#             self.top += 1
+#             self.properties[self.top] = value
             
-    def pop(self):
+#     def pop(self):
 
-        if self.isEmpty():
-            raise Exception('Stack is Empty')
-        else:
-            index = self.top
-            self.top -=1
-            return self.properties[index]
+#         if self.isEmpty():
+#             raise Exception('Stack is Empty')
+#         else:
+#             index = self.top
+#             self.top -=1
+#             return self.properties[index]
 
-    def isFull(self):
+#     def isFull(self):
 
-        if self.max-1 == self.top:
-            return True
-        else:
-            return False
+#         if self.max-1 == self.top:
+#             return True
+#         else:
+#             return False
         
-    def isEmpty(self):
+#     def isEmpty(self):
 
-        if self.top==-1:
-            return True
-        else:
-            return False
+#         if self.top==-1:
+#             return True
+#         else:
+#             return False
         
-    def printProperties(self):
+#     def printProperties(self):
         
-        for i in range(self.top,-1,-1):
-            print(self.properties[i])
+#         for i in range(self.top,-1,-1):
+#             print(self.properties[i])
 
-    def clear(self):
-        self.properties.clear()
-        for i in range(self.max):
-            self.properties.append(None)
-        self.top = -1
+#     def clear(self):
+#         self.properties.clear()
+#         for i in range(self.max):
+#             self.properties.append(None)
+#         self.top = -1
 
-    def count(self):
-        return self.top + 1
+#     def count(self):
+#         return self.top + 1
 
-class Queue:
+# class Queue:
 
-    def __init__(self,max) -> None:
+#     def __init__(self,max) -> None:
 
-        self.rear = -1
-        self.front = -1
-        self.max = max
-        self.properties = []
-        for i in range(max):
-            self.properties.append(None)
+#         self.rear = -1
+#         self.front = -1
+#         self.max = max
+#         self.properties = []
+#         for i in range(max):
+#             self.properties.append(None)
 
-    def add(self,value):
+#     def add(self,value):
 
-        if self.isFull():
-            raise Exception('Queue is Full')
-        else:
-            self.rear +=1
-            self.properties[self.rear]=value
+#         if self.isFull():
+#             raise Exception('Queue is Full')
+#         else:
+#             self.rear +=1
+#             self.properties[self.rear]=value
 
-    def dequeue(self):
+#     def dequeue(self):
 
-        if self.isEmpty():
-            raise Exception('Queue is Empty')
-        else:
-            self.front+=1
-            return self.properties[self.front]
+#         if self.isEmpty():
+#             raise Exception('Queue is Empty')
+#         else:
+#             self.front+=1
+#             return self.properties[self.front]
 
-    def isFull(self):
+#     def isFull(self):
 
-        if self.max-1 == self.rear:
-            return True
-        else:
-            return False
+#         if self.max-1 == self.rear:
+#             return True
+#         else:
+#             return False
         
-    def isEmpty(self):
+#     def isEmpty(self):
 
-        if self.front==self.rear:
-            return True
-        else:
-            return False
+#         if self.front==self.rear:
+#             return True
+#         else:
+#             return False
         
-    def printProperties(self):
+#     def printProperties(self):
 
-        for i in range(self.front+1,self.rear+1):
-            print(self.properties[i])
+#         for i in range(self.front+1,self.rear+1):
+#             print(self.properties[i])
 
 class Move:
 
@@ -364,9 +365,9 @@ def move_piece(piece):
                     des_piece = pieces.check_piece_on_box(cordinate2[0],cordinate2[1])
 
                     move = Move(piece.color,piece,[piece.row,piece.column],cordinate2,des_piece)
-                    game_moves.add(move)
-                    game_moves_stack.push(move)
-                    game_moves_temp_stack.clear()
+                    dataStructures.game_moves.add(move)
+                    dataStructures.game_moves_stack.push(move)
+                    dataStructures.game_moves_temp_stack.clear()
 
                     if des_piece is not None:
                         pieces.alive_pieces.remove(des_piece)
@@ -478,8 +479,8 @@ def check_Undo(mouseX , mouseY):
     if mouseX >=50 and mouseX <=150 and mouseY>=50 and mouseY<=150:
         print('UNDO')
         try:
-            move:Move = game_moves_stack.pop()
-            game_moves_temp_stack.push(move)
+            move:Move = dataStructures.game_moves_stack.pop()
+            dataStructures.game_moves_temp_stack.push(move)
 
             global t0
             t0 = time.time()
@@ -528,8 +529,8 @@ def check_Redo(mouseX , mouseY):
     if mouseX >=50 and mouseX <=150 and mouseY>=200 and mouseY<=300:
         print('REDO')
         try:
-            move:Move = game_moves_temp_stack.pop()
-            game_moves_stack.push(move)
+            move:Move = dataStructures.game_moves_temp_stack.pop()
+            dataStructures.game_moves_stack.push(move)
 
             global t0
             t0 = time.time()
@@ -762,13 +763,13 @@ def update_gameLog(content):
 
     if mode=='normal move':
 
-        last_move = game_moves_stack.properties[game_moves_stack.top]
+        last_move = dataStructures.game_moves_stack.properties[dataStructures.game_moves_stack.top]
 
         if last_move.pawn_promotion:
 
             check_bool = context
             
-            # last_move = game_moves_stack.properties[game_moves_stack.top]
+            # last_move = dataStructures.game_moves_stack.properties[dataStructures.game_moves_stack.top]
 
             sep = False
 
@@ -812,7 +813,7 @@ def update_gameLog(content):
 
             check_bool = context
             
-            # last_move = game_moves_stack.properties[game_moves_stack.top]
+            # last_move = dataStructures.game_moves_stack.properties[dataStructures.game_moves_stack.top]
 
             if check_bool:
                 check = ' Check'
@@ -833,7 +834,7 @@ def update_gameLog(content):
         else:
             check_bool = context
             
-            # last_move = game_moves_stack.properties[game_moves_stack.top]
+            # last_move = dataStructures.game_moves_stack.properties[dataStructures.game_moves_stack.top]
 
             sep = False
 
@@ -926,7 +927,7 @@ def update_gameLog(content):
         
     #         check_bool = context
             
-    #         # last_move = game_moves_stack.properties[game_moves_stack.top]
+    #         # last_move = dataStructures.game_moves_stack.properties[dataStructures.game_moves_stack.top]
 
     #         sep = False
     #         # iffff=Move(2,2,2,2,2,2,2,2)
@@ -981,7 +982,7 @@ def update_gameLog(content):
         
     #         check_bool = context
             
-    #         # last_move = game_moves_stack.properties[game_moves_stack.top]
+    #         # last_move = dataStructures.game_moves_stack.properties[dataStructures.game_moves_stack.top]
 
     #         sep = False
     #         # iffff=Move(2,2,2,2,2,2,2,2)
@@ -1181,11 +1182,11 @@ def pawn_promotion(pawn:pieces.Pawn):
 
                 if promoted_piece is not None:
                     piece_selected = True
-                    last_move:Move = game_moves_stack.pop()
+                    last_move:Move = dataStructures.game_moves_stack.pop()
                     last_move.pawn_promotion = True
                     last_move.piece = promoted_piece
                     last_move.eaten_piece = [last_move.eaten_piece,pawn]
-                    game_moves_stack.push(last_move)
+                    dataStructures.game_moves_stack.push(last_move)
                     pieces.alive_pieces.remove(pawn)
                     pieces.alive_pieces.append(promoted_piece)
 
@@ -1200,9 +1201,9 @@ def pawn_promotion(pawn:pieces.Pawn):
 
     # WL_rook.setScale(pygame.transform.scale(WL_rook.img,(50,50)))
 
-    # last_move:Move = game_moves_stack.pop()
+    # last_move:Move = dataStructures.game_moves_stack.pop()
     # last_move.piece = new_queen
-    # game_moves_stack.push(last_move)
+    # dataStructures.game_moves_stack.push(last_move)
     # pieces.alive_pieces.remove(pawn)
     # pieces.alive_pieces.append(new_queen)
 
@@ -1304,10 +1305,10 @@ game_board = pygame.transform.scale(game_board,(600,600))
 # pieces.alive_pieces = []
 eaten_pieces = []
 
-game_moves = Queue(12000)
+# dataStructures.game_moves = Queue(12000)
 
-game_moves_stack = Stack(12000)
-game_moves_temp_stack = Stack(12000)
+# dataStructures.game_moves_stack = Stack(12000)
+# dataStructures.game_moves_temp_stack = Stack(12000)
 
 initialize_pieces()
 #top of board = 228 , 30

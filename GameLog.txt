@@ -1,32 +1,76 @@
 White Pawn to e4 
-Black Pawn to h6 
+Black Pawn to a5 
 White Pawn to e5 
+Black Pawn to f5 
+--Undo Black Pawn back to f7
 Black Pawn to d5 
+White Pawn to a3 
+Black Pawn to a4 
+White Pawn to b4 
+Black Pawn to b5 
+White Pawn to h3 
+--Undo White Pawn back to h2
+--Undo Black Pawn back to b7
+--Undo White Pawn back to b2
+--Undo Black Pawn back to a5
+--Undo White Pawn back to a2
+--Undo Black Pawn back to d7
+--Redo Black Pawn on to d5
 White Pawn to d6 - En Passant
-Black Queen to d6 - Crash
-White Pawn to d4 
-Black Pawn to h5 
-White Pawn to d5 
-Black Pawn to h4 
-White Pawn to g4 
-Black Pawn to g3 - En Passant
-White Pawn to g3 - Crash
---Undo White Pawn back to h2
---Undo En Passant Black Pawn back to h4
---Undo White Pawn back to g2
---Redo White Pawn on to g4
---Redo En Passant Black Pawn on to g3
---Redo White Pawn on to g3
---Undo White Pawn back to h2
---Undo En Passant Black Pawn back to h4
---Undo White Pawn back to g2
---Undo Black Pawn back to h5
---Undo White Pawn back to d4
---Undo Black Pawn back to h6
---Undo White Pawn back to d2
---Undo Black Queen back to d8
+Black Pawn to a4 
+White Pawn to b4 
+Black Pawn to b3 - En Passant
+White Bishop to b5 - Check
+Black Pawn to c6 
+White Knight to f3 
+Black Pawn to b5 - Crash
+White King Castling O-O
+Black Pawn to b4 
+White Pawn to c4 
+Black Pawn to h6 
+White Queen to e2 
+--Undo White Queen back to d1
+--Undo Black Pawn back to h7
+--Undo White Pawn back to c2
+--Redo White Pawn on to c4
+Black Pawn to c3 - En Passant
+--Undo En Passant Black Pawn back to b4
+--Undo White Pawn back to c2
+--Undo Black Pawn back to b5
+--Undo White King Castling O-O
+--Undo Black Pawn back to c6
+--Undo White Knight back to g1
+--Undo Black Pawn back to c7
+--Undo White Bishop back to f1
+--Undo En Passant Black Pawn back to a4
+--Undo White Pawn back to b2
+--Undo Black Pawn back to a5
 --Undo En Passant White Pawn back to e5
 --Undo Black Pawn back to d7
 --Undo White Pawn back to e4
---Undo Black Pawn back to h7
+--Undo Black Pawn back to a7
 --Undo White Pawn back to e2
+--Redo White Pawn on to e4
+--Redo Black Pawn on to a5
+--Redo White Pawn on to e5
+--Redo Black Pawn on to d5
+--Redo En Passant White Pawn on to d6
+--Redo Black Pawn on to a4
+--Redo White Pawn on to b4
+--Redo En Passant Black Pawn on to b3
+--Redo White Bishop on to b5
+--Redo Black Pawn on to c6
+--Redo White Knight on to f3
+--Redo Black Pawn on to b5
+--Redo White King Castling O-O
+--Redo Black Pawn on to b4
+--Redo White Pawn on to c4
+--Redo En Passant Black Pawn on to c3
+--Undo En Passant Black Pawn back to b4
+--Undo White Pawn back to c2
+--Undo Black Pawn back to b5
+--Undo White King Castling O-O
+--Redo White King Castling O-O
+--Redo Black Pawn on to b4
+--Redo White Pawn on to c4
+--Redo En Passant Black Pawn on to c3
