@@ -285,6 +285,10 @@ def initialize_pieces():
 
 def draw_pieces():
     for piece in pieces.alive_pieces:
+        if piece.__str__() == 'King' and piece.is_checked:
+            piece_cord = cal_screen_position(piece.row,piece.column)
+            pygame.draw.rect(game_screen,'dark red',[piece_cord[0]-9,piece_cord[1]-11,BOX_LENGTH,BOX_LENGTH])
+            # pygame.draw.rect(game_screen,'dark red',[cal_screen_position(piece.row,piece.column)[0]-(BOX_LENGTH//7),cal_screen_position(piece.row,piece.column)[1]-(BOX_LENGTH//7),BOX_LENGTH,BOX_LENGTH])
         game_screen.blit(piece.img,cal_screen_position(piece.row,piece.column))
     
 def cal_board_index(mouseX,mouseY):
@@ -453,7 +457,12 @@ def move_piece(piece):
 
 def check_condition():
 
+    checking_king:pieces.King
+
     for piece in pieces.alive_pieces:
+
+        if piece.__str__()=='King' and piece.color == pieces.turn:
+            checking_king = piece
 
         # if pieces.turn != piece.color:
         for loc in piece.allowedMoves():
@@ -466,6 +475,7 @@ def check_condition():
                     print('CHECK!!!!!!!')
                     return True
                 
+    checking_king.is_checked = False
     return False
 
 def check_Undo(mouseX , mouseY):
@@ -519,6 +529,7 @@ def check_Undo(mouseX , mouseY):
                 if move.eaten_piece is not None:
                     eaten_pieces.remove(move.eaten_piece)
                     pieces.alive_pieces.append(move.eaten_piece)
+            check_condition()
             change_turn()
             update_gameLog(['undo',move])
         except:
@@ -589,6 +600,7 @@ def check_Redo(mouseX , mouseY):
                 if move.eaten_piece is not None:
                     pieces.alive_pieces.remove(move.eaten_piece)
                     eaten_pieces.append(move.eaten_piece)
+            check_condition()
             change_turn()
             update_gameLog(['redo',move])
         except:
@@ -1093,6 +1105,9 @@ def draw_final_board():
         pygame.draw.rect(game_screen,'black',[50,200,100,100])
         game_screen.blit(font_big.render('Redo',True,'white'),(57,235))
 
+        pygame.draw.rect(game_screen,'black',[50,480,100,100])
+        game_screen.blit(font_big.render('Reset',True,'white'),(53,510))
+
         if winner == 'Draw':
             game_screen.blit(font_big.render('Draw !!!',True,'black'),(430,625))
         else:
@@ -1101,8 +1116,18 @@ def draw_final_board():
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 run = False
+                global game_boolean
+                game_boolean = False
                 pygame.quit()
                 sys.exit()
+
+            if event.type==pygame.MOUSEBUTTONDOWN:
+                mouseX = pygame.mouse.get_pos()[0]
+                mouseY = pygame.mouse.get_pos()[1]
+                
+                if check_reset(mouseX,mouseY):
+                    run = False
+
 
         pygame.display.flip()
 
@@ -1273,6 +1298,42 @@ def check_en_passant(move:Move):
         pieces.alive_pieces.remove(move.eaten_piece)
         eaten_pieces.append(move.eaten_piece)
         
+def check_reset(mouseX , mouseY):
+
+    # pygame.draw.rect(game_screen,'black',[50,480,100,100])
+    # game_screen.blit(font_big.render('Reset',True,'white'),(53,510))
+
+    if mouseX>=50 and mouseX<=150 and mouseY>=480 and mouseY<=580:
+        
+        pieces.alive_pieces.clear()
+        eaten_pieces.clear()
+
+        dataStructures.game_moves.clear()
+        dataStructures.game_moves_stack.clear()
+        dataStructures.game_moves_temp_stack.clear()
+
+        global t0
+        t0 = time.time()
+
+        initialize_pieces()
+
+        file = open('GameLog.txt','wt')
+        file.close()
+
+        pieces.turn = 'White'
+
+        global winner
+        winner = 'no one'
+
+        global game_boolean
+        game_boolean = True
+
+        return True
+    
+    return False
+
+
+
 
 
 #top of board = 228 , 30
@@ -1342,6 +1403,10 @@ while game_boolean:
     pygame.draw.rect(game_screen,'black',[50,200,100,100])
     game_screen.blit(font_big.render('Redo',True,'white'),(57,235))
 
+    pygame.draw.rect(game_screen,'black',[50,480,100,100])
+    game_screen.blit(font_big.render('Reset',True,'white'),(53,510))
+
+
     game_screen.blit(font_big.render(f'{pieces.turn}\'s turn',True,'black'),(400,625))
 
     for event in pygame.event.get():
@@ -1362,6 +1427,7 @@ while game_boolean:
 
             check_Undo(mouseX,mouseY)
             check_Redo(mouseX,mouseY)
+            check_reset(mouseX,mouseY)
 
             piece = pieces.check_piece_on_box(cordinate[0],cordinate[1])
             print(piece)
@@ -1398,17 +1464,28 @@ while game_boolean:
     # game_screen.blit(WL_rook.img,WL_rook.starting_position)
     check_timer()
 
+    if winner != 'no one':
+
+        file = open('GameLog.txt','at')
+        if winner=='Draw':
+            file.write('Draw !')
+        else:
+            file.write(f'Winner is: {winner} !')
+        file.close()
+
+        draw_final_board()
+
     pygame.display.flip()
 
 
-file = open('GameLog.txt','at')
-if winner=='Draw':
-    file.write('Draw !')
-else:
-    file.write(f'Winner is: {winner} !')
-file.close()
+# file = open('GameLog.txt','at')
+# if winner=='Draw':
+#     file.write('Draw !')
+# else:
+#     file.write(f'Winner is: {winner} !')
+# file.close()
 
-if winner != 'no one':
-    draw_final_board()
+# if winner != 'no one':
+#     draw_final_board()
 
 pygame.quit()

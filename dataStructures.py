@@ -98,6 +98,13 @@ class Queue:
         for i in range(self.front+1,self.rear+1):
             print(self.properties[i])
 
+    def clear(self):
+        self.properties.clear()
+        for i in range(self.max):
+            self.properties.append(None)
+        self.rear = -1
+        self.front = -1
+
 
 game_moves = Queue(12000)
 
