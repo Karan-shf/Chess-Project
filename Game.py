@@ -344,7 +344,8 @@ def move_piece(piece):
 
     while piece_seleceted:
         # game_screen.fill('dark gray',[15,345,180,100])
-        check_timer()
+        if check_timer():
+            piece_seleceted = False
         # pygame.display.flip()
         # pygame.display.update([15,345,180,100])
 
@@ -1148,6 +1149,7 @@ def check_timer():
         game_boolean = False
         global winner
         winner = 'Black' if pieces.turn=='White' else 'White'
+        return True
 
 def pawn_promotion(pawn:pieces.Pawn):
 
