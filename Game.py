@@ -4,105 +4,6 @@ import pygame
 import sys
 import time
 
-# class Stack:
-
-#     def __init__(self,max) -> None:
-#         self.top = -1
-#         self.max = max
-#         self.properties = []
-#         for i in range(max):
-#             self.properties.append(None)
-
-#     def push(self,value):
-        
-#         if self.isFull():
-#             raise Exception('Stack is Full')
-#         else:
-#             self.top += 1
-#             self.properties[self.top] = value
-            
-#     def pop(self):
-
-#         if self.isEmpty():
-#             raise Exception('Stack is Empty')
-#         else:
-#             index = self.top
-#             self.top -=1
-#             return self.properties[index]
-
-#     def isFull(self):
-
-#         if self.max-1 == self.top:
-#             return True
-#         else:
-#             return False
-        
-#     def isEmpty(self):
-
-#         if self.top==-1:
-#             return True
-#         else:
-#             return False
-        
-#     def printProperties(self):
-        
-#         for i in range(self.top,-1,-1):
-#             print(self.properties[i])
-
-#     def clear(self):
-#         self.properties.clear()
-#         for i in range(self.max):
-#             self.properties.append(None)
-#         self.top = -1
-
-#     def count(self):
-#         return self.top + 1
-
-# class Queue:
-
-#     def __init__(self,max) -> None:
-
-#         self.rear = -1
-#         self.front = -1
-#         self.max = max
-#         self.properties = []
-#         for i in range(max):
-#             self.properties.append(None)
-
-#     def add(self,value):
-
-#         if self.isFull():
-#             raise Exception('Queue is Full')
-#         else:
-#             self.rear +=1
-#             self.properties[self.rear]=value
-
-#     def dequeue(self):
-
-#         if self.isEmpty():
-#             raise Exception('Queue is Empty')
-#         else:
-#             self.front+=1
-#             return self.properties[self.front]
-
-#     def isFull(self):
-
-#         if self.max-1 == self.rear:
-#             return True
-#         else:
-#             return False
-        
-#     def isEmpty(self):
-
-#         if self.front==self.rear:
-#             return True
-#         else:
-#             return False
-        
-#     def printProperties(self):
-
-#         for i in range(self.front+1,self.rear+1):
-#             print(self.properties[i])
 
 class Move:
 
@@ -120,100 +21,66 @@ def initialize_pieces():
 
     WL_rook = pieces.Rook('White',pygame.image.load('imgs/White_Rook.png'),7,0,'Left')
     WL_rook.setScale(pygame.transform.scale(WL_rook.img,(50,50)))
-    # WL_rook.setStartingPosition(WL_rook.img.get_rect())
-    # WL_rook.starting_position.topleft = (250,500)
     pieces.alive_pieces.append(WL_rook)
 
     WR_rook = pieces.Rook('White',pygame.image.load('imgs/White_Rook.png'),7,7,'Right')
     WR_rook.setScale(pygame.transform.scale(WR_rook.img,(50,50)))
-    # WR_rook.setStartingPosition(WR_rook.img.get_rect())
-    # WR_rook.starting_position.topleft = (700,500)
     pieces.alive_pieces.append(WR_rook)
 
     WL_knight = pieces.Knight('White',pygame.image.load('imgs/White_Knight.png'),7,1)
     WL_knight.setScale(pygame.transform.scale(WL_knight.img,(50,50)))
-    # WL_knight.setStartingPosition(WL_knight.img.get_rect())
-    # WL_knight.starting_position.topleft = (320,500)
     pieces.alive_pieces.append(WL_knight)
 
     WR_knight = pieces.Knight('White',pygame.image.load('imgs/White_Knight.png'),7,6)
     WR_knight.setScale(pygame.transform.scale(WR_knight.img,(50,50)))
-    # WR_knight.setStartingPosition(WR_knight.img.get_rect())
-    # WR_knight.starting_position.topleft = (630,500)
     pieces.alive_pieces.append(WR_knight)
    
     WL_bishop = pieces.Bishop('White',pygame.image.load('imgs/White_Bishop.png'),7,2)
     WL_bishop.setScale(pygame.transform.scale(WL_bishop.img,(50,50)))
-    # WL_bishop.setStartingPosition(WL_bishop.img.get_rect())
-    # WL_bishop.starting_position.topleft = (380,500)
     pieces.alive_pieces.append(WL_bishop)
 
     WR_bishop = pieces.Bishop('White',pygame.image.load('imgs/White_Bishop.png'),7,5)
     WR_bishop.setScale(pygame.transform.scale(WR_bishop.img,(50,50)))
-    # WR_bishop.setStartingPosition(WR_bishop.img.get_rect())
-    # WR_bishop.starting_position.topleft = (570,500)
     pieces.alive_pieces.append(WR_bishop)
 
-#fmerklgelkrngeklnrgklenlgkenrgneklrg
     W_Queen = pieces.Queen('White',pygame.image.load('imgs/White_Queen.png'),7,3)
     W_Queen.setScale(pygame.transform.scale(W_Queen.img,(50,50)))
-    # W_Queen.setStartingPosition(W_Queen.img.get_rect())
-    # W_Queen.starting_position.topleft = (440,500)
     pieces.alive_pieces.append(W_Queen)
 
-#ngkgnelkrngelknglekngeklnrg
     W_King = pieces.King('White',pygame.image.load('imgs/White_King.png'),7,4)
     W_King.setScale(pygame.transform.scale(W_King.img,(50,50)))
-    # W_King.setStartingPosition(W_King.img.get_rect())
-    # W_King.starting_position.topleft = (510,500)
     pieces.alive_pieces.append(W_King)
 
     W_Pawn1 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,0)
     W_Pawn1.setScale(pygame.transform.scale(W_Pawn1.img,(50,50)))
-    # W_Pawn1.setStartingPosition(W_Pawn1.img.get_rect())
-    # W_Pawn1.starting_position.topleft = (250,430)
     pieces.alive_pieces.append(W_Pawn1)
 
     W_Pawn2 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,1)
     W_Pawn2.setScale(pygame.transform.scale(W_Pawn2.img,(50,50)))
-    # W_Pawn2.setStartingPosition(W_Pawn2.img.get_rect())
-    # W_Pawn2.starting_position.topleft = (320,430)
     pieces.alive_pieces.append(W_Pawn2)
 
     W_Pawn3 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,2)
     W_Pawn3.setScale(pygame.transform.scale(W_Pawn3.img,(50,50)))
-    # W_Pawn3.setStartingPosition(W_Pawn3.img.get_rect())
-    # W_Pawn3.starting_position.topleft = (380,430)
     pieces.alive_pieces.append(W_Pawn3)
 
     W_Pawn4 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,3)
     W_Pawn4.setScale(pygame.transform.scale(W_Pawn4.img,(50,50)))
-    # W_Pawn4.setStartingPosition(W_Pawn4.img.get_rect())
-    # W_Pawn4.starting_position.topleft = (440,430)
     pieces.alive_pieces.append(W_Pawn4)
 
     W_Pawn5 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,4)
     W_Pawn5.setScale(pygame.transform.scale(W_Pawn5.img,(50,50)))
-    # W_Pawn5.setStartingPosition(W_Pawn5.img.get_rect())
-    # W_Pawn5.starting_position.topleft = (510,430)
     pieces.alive_pieces.append(W_Pawn5)
 
     W_Pawn6 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,5)
     W_Pawn6.setScale(pygame.transform.scale(W_Pawn6.img,(50,50)))
-    # W_Pawn6.setStartingPosition(W_Pawn6.img.get_rect())
-    # W_Pawn6.starting_position.topleft = (570,430)
     pieces.alive_pieces.append(W_Pawn6)
 
     W_Pawn7 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,6)
     W_Pawn7.setScale(pygame.transform.scale(W_Pawn7.img,(50,50)))
-    # W_Pawn7.setStartingPosition(W_Pawn7.img.get_rect())
-    # W_Pawn7.starting_position.topleft = (630,430)
     pieces.alive_pieces.append(W_Pawn7)
 
     W_Pawn8 = pieces.Pawn('White',pygame.image.load('imgs/White_Pawn.png'),6,7)
     W_Pawn8.setScale(pygame.transform.scale(W_Pawn8.img,(50,50)))
-    # W_Pawn8.setStartingPosition(W_Pawn8.img.get_rect())
-    # W_Pawn8.starting_position.topleft = (700,430)
     pieces.alive_pieces.append(W_Pawn8)
 
 
@@ -297,21 +164,13 @@ def cal_board_index(mouseX,mouseY):
     return [row,col]
 
 def cal_screen_position(row,col):
-    # pieceX = (col * BOX_LENGTH) + BOARD_SIDE_LENGTH
-    # pieceY = (row * BOX_LENGTH) + BOARD_UPPER_LENGTH
 
     pieceX = (col * BOX_LENGTH) + BOARD_SIDE_LENGTH + (BOX_LENGTH // 7)
     pieceY = (row * BOX_LENGTH) + BOARD_UPPER_LENGTH + (BOX_LENGTH // 7)
     return (pieceX,pieceY)
 
-# def check_piece_on_box(row,col):
-#     for piece in pieces.alive_pieces:
-#         if piece.row == row and piece.column == col :
-#             return piece
-#     return None
-
 def change_turn():
-    # global pieces.turn
+    
     if pieces.turn == 'White':
         pieces.turn = 'Black'
     else:
@@ -325,9 +184,24 @@ def draw_allowedMoves(piece):
         cord = cal_screen_position(box[0],box[1])
 
         b_color = 200 - i
-        b_color = max(b_color, 0)
+        b_color = max(b_color,0)
 
-        pygame.draw.circle(game_screen,(34,67,b_color),[cord[0]+BOX_LENGTH//3,cord[1]+BOX_LENGTH//3],BOX_LENGTH//4)
+        rcolor = 34
+        rcolor = min(rcolor,250)
+
+        gcolor = 67
+        gcolor = max(gcolor,0)
+
+        pygame.draw.circle(game_screen,(rcolor,gcolor,b_color),[cord[0]+BOX_LENGTH//3,cord[1]+BOX_LENGTH//3],BOX_LENGTH//4)
+
+        
+        desPiece = pieces.check_piece_on_box(box[0],box[1])
+        if desPiece is not None:
+            pygame.draw.rect(game_screen,'red',[cord[0]-9,cord[1]-10,BOX_LENGTH,BOX_LENGTH],2)
+
+        check_timer()
+
+
         pygame.display.flip()
         i+=10
 
@@ -335,21 +209,16 @@ def move_piece(piece):
 
     piece_seleceted = True
 
-    # print(piece.allowedMoves(True))
-
-    # pygame.display.flip()
     piece_cord = cal_screen_position(piece.row,piece.column)
-    pygame.draw.rect(game_screen,'red',[piece_cord[0]-9,piece_cord[1]-10,BOX_LENGTH,BOX_LENGTH],2)
+    pygame.draw.rect(game_screen,'green',[piece_cord[0]-9,piece_cord[1]-10,BOX_LENGTH,BOX_LENGTH],2)
     pygame.display.flip()
 
+    draw_allowedMoves(piece)
+
     while piece_seleceted:
-        # game_screen.fill('dark gray',[15,345,180,100])
+    
         if check_timer():
             piece_seleceted = False
-        # pygame.display.flip()
-        # pygame.display.update([15,345,180,100])
-
-        draw_allowedMoves(piece)
 
         for event2 in pygame.event.get():
 
@@ -382,8 +251,7 @@ def move_piece(piece):
                     global t0
                     t0 = time.time()
                     if piece.__str__() == 'Pawn':
-                        # if not piece.has_moved:
-                        #     piece.has_moved = True
+        
                         piece.move_count += 1
 
                         check_en_passant(move)
@@ -402,7 +270,7 @@ def move_piece(piece):
                         if pie.__str__()=='King' and pie.color==pieces.turn:
                             if pie.is_checked:
                                 pie.setCheck(False)
-                                print('not check anymore')
+                                
                             break
 
 
@@ -414,48 +282,6 @@ def move_piece(piece):
 
                 piece_seleceted = False
 
-# def cause_check(pieceee,consider_destination):
-
-
-#     temp_piece_holder = []
-#     dest_piece_in_cord = pieces.check_piece_on_box(consider_destination[0],consider_destination[1])
-#     if dest_piece_in_cord is not None:
-#         # if dest_piece_in_cord.color != pieceee.color:
-#         # if dest_piece_in_cord is not pieceee:
-#         temp_piece_holder.append(dest_piece_in_cord)
-#         pieces.alive_pieces.remove(dest_piece_in_cord)
-    
-#     origin_row = pieceee.row
-#     origin_column = pieceee.column
-
-
-#     # pieces.alive_pieces.remove(pieceee)
-#     pieceee.row = consider_destination[0]
-#     pieceee.column = consider_destination[1]
-#     # pieces.alive_pieces.append(pieceee)
-
-    
-
-#     #check for check conidtion
-#     for checking_piece in pieces.alive_pieces:
-#         if checking_piece.color != pieces.turn:
-#             for loc in checking_piece.allowedMoves():
-#                 dest_piece = pieces.check_piece_on_box(loc[0],loc[1])
-
-#                 if dest_piece is not None:
-#                     #                                      dest_piece.color == pieces.turn
-#                        if dest_piece.__str__()=='King' and dest_piece.color != checking_piece.color :
-#                         # dest_piece.setCheck(True)
-#                         pieceee.row = origin_row
-#                         pieceee.column = origin_column
-#                         print('not allowed to move!')
-#                         pieces.alive_pieces.extend(temp_piece_holder)
-#                         return True
-#     pieceee.row = origin_row
-#     pieceee.column = origin_column
-#     pieces.alive_pieces.extend(temp_piece_holder)
-#     return False
-
 def check_condition():
 
     checking_king:pieces.King
@@ -465,7 +291,7 @@ def check_condition():
         if piece.__str__()=='King' and piece.color == pieces.turn:
             checking_king = piece
 
-        # if pieces.turn != piece.color:
+    
         for loc in piece.allowedMoves():
 
             dest_piece = pieces.check_piece_on_box(loc[0],loc[1])
@@ -473,7 +299,6 @@ def check_condition():
             if dest_piece is not None:
                 if dest_piece.__str__()=='King' and dest_piece.color != piece.color :
                     dest_piece.setCheck(True)
-                    print('CHECK!!!!!!!')
                     return True
                 
     checking_king.is_checked = False
@@ -481,14 +306,10 @@ def check_condition():
 
 def check_Undo(mouseX , mouseY):
     
-    # problem: if soldier undos into first move it should be able to move 2 rooms again
-    # solution: replace "bool has_moved" with "int move_count"
-
-    # problem: eaten piece have to come back to life
-    # solution: add an eaten_piece variable to Move class
+    
 
     if mouseX >=50 and mouseX <=150 and mouseY>=50 and mouseY<=150:
-        print('UNDO')
+        
         try:
             move:Move = dataStructures.game_moves_stack.pop()
             dataStructures.game_moves_temp_stack.push(move)
@@ -505,7 +326,7 @@ def check_Undo(mouseX , mouseY):
                 if enemy_eaten_piece is not None:
                     pieces.alive_pieces.append(enemy_eaten_piece)
                     eaten_pieces.remove(enemy_eaten_piece)
-                # move.piece = promoted_pawn
+                
             elif move.castling:
                 rook_origin_loc = {
                     1 : [7,7],
@@ -534,12 +355,13 @@ def check_Undo(mouseX , mouseY):
             change_turn()
             update_gameLog(['undo',move])
         except:
-            print('no moves has been made!')
+            
+            pass
 
 def check_Redo(mouseX , mouseY):
 
     if mouseX >=50 and mouseX <=150 and mouseY>=200 and mouseY<=300:
-        print('REDO')
+        
         try:
             move:Move = dataStructures.game_moves_temp_stack.pop()
             dataStructures.game_moves_stack.push(move)
@@ -548,15 +370,7 @@ def check_Redo(mouseX , mouseY):
             t0 = time.time()
 
             if move.pawn_promotion:
-                # enemy_eaten_piece , promoted_pawn = move.eaten_piece
-                # promoted_pawn.setPosition(move.origin_loc[0],move.origin_loc[1])
-                # promoted_pawn.move_count -= 1
-                # pieces.alive_pieces.remove(move.piece)
-                # pieces.alive_pieces.append(promoted_pawn)
-                # if enemy_eaten_piece is not None:
-                #     pieces.alive_pieces.append(enemy_eaten_piece)
-                #     eaten_pieces.remove(enemy_eaten_piece)
-                # move.piece = promoted_pawn
+               
                 enemy_eaten_piece , promoted_pawn = move.eaten_piece
                 promoted_pawn.setPosition(move.destination[0],move.destination[1])
                 promoted_pawn.move_count += 1
@@ -567,17 +381,7 @@ def check_Redo(mouseX , mouseY):
                     eaten_pieces.append(enemy_eaten_piece)
 
             elif move.castling:
-                # rook_origin_loc = {
-                #     1 : [7,7],
-                #     2 : [7,0],
-                #     3 : [0,7],
-                #     4 : [0,0]
-                # }
-                # moven_king , moven_rook , castling_type = move.piece
-                # moven_king.setPosition(move.origin_loc[0],move.origin_loc[1])
-                # moven_king.move_count -= 1
-                # rook_origin_row , rook_origin_col = rook_origin_loc[castling_type]
-                # moven_rook.setPosition(rook_origin_row , rook_origin_col)
+                
                 rook_dest_dict = {
                     1 : [7,5],
                     2 : [7,3],
@@ -605,53 +409,14 @@ def check_Redo(mouseX , mouseY):
             change_turn()
             update_gameLog(['redo',move])
         except:
-            print('no moves to redo')
+        
+            pass
 
 def draw_eaten_pieces():
 
     game_screen.blit(font_small.render('White eaten pieces',True,'black'),(805,10))
 
-    # pygame.draw.rect(game_screen,'black',[810,40,50,50])
-    # pygame.draw.rect(game_screen,'black',[870,40,50,50])
-    # pygame.draw.rect(game_screen,'black',[930,40,50,50])
-
-    # pygame.draw.rect(game_screen,'black',[810,100,50,50])
-    # pygame.draw.rect(game_screen,'black',[870,100,50,50])
-    # pygame.draw.rect(game_screen,'black',[930,100,50,50])
-
-    # pygame.draw.rect(game_screen,'black',[810,160,50,50])
-    # pygame.draw.rect(game_screen,'black',[870,160,50,50])
-    # pygame.draw.rect(game_screen,'black',[930,160,50,50])
-
-    # pygame.draw.rect(game_screen,'black',[810,220,50,50])
-    # pygame.draw.rect(game_screen,'black',[870,220,50,50])
-    # pygame.draw.rect(game_screen,'black',[930,220,50,50])
-
-    # pygame.draw.rect(game_screen,'black',[810,280,50,50])
-    # pygame.draw.rect(game_screen,'black',[870,280,50,50])
-    # pygame.draw.rect(game_screen,'black',[930,280,50,50])
-
     game_screen.blit(font_small.render('Black eaten pieces',True,'black'),(805,350))
-
-    # pygame.draw.rect(game_screen,'white',[810,380,50,50])
-    # pygame.draw.rect(game_screen,'white',[870,380,50,50])
-    # pygame.draw.rect(game_screen,'white',[930,380,50,50])
-
-    # pygame.draw.rect(game_screen,'white',[810,440,50,50])
-    # pygame.draw.rect(game_screen,'white',[870,440,50,50])
-    # pygame.draw.rect(game_screen,'white',[930,440,50,50])
-
-    # pygame.draw.rect(game_screen,'white',[810,500,50,50])
-    # pygame.draw.rect(game_screen,'white',[870,500,50,50])
-    # pygame.draw.rect(game_screen,'white',[930,500,50,50])
-
-    # pygame.draw.rect(game_screen,'white',[810,560,50,50])
-    # pygame.draw.rect(game_screen,'white',[870,560,50,50])
-    # pygame.draw.rect(game_screen,'white',[930,560,50,50])
-
-    # pygame.draw.rect(game_screen,'white',[810,620,50,50])
-    # pygame.draw.rect(game_screen,'white',[870,620,50,50])
-    # pygame.draw.rect(game_screen,'white',[930,620,50,50])
 
     white_grave = [
         (810,40),
@@ -782,8 +547,6 @@ def update_gameLog(content):
 
             check_bool = context
             
-            # last_move = dataStructures.game_moves_stack.properties[dataStructures.game_moves_stack.top]
-
             sep = False
 
             if last_move.eaten_piece[0] is not None:
@@ -826,8 +589,6 @@ def update_gameLog(content):
 
             check_bool = context
             
-            # last_move = dataStructures.game_moves_stack.properties[dataStructures.game_moves_stack.top]
-
             if check_bool:
                 check = ' Check'
             else:
@@ -847,8 +608,6 @@ def update_gameLog(content):
         else:
             check_bool = context
             
-            # last_move = dataStructures.game_moves_stack.properties[dataStructures.game_moves_stack.top]
-
             sep = False
 
             if last_move.eaten_piece is not None:
@@ -913,134 +672,6 @@ def update_gameLog(content):
         else:
             file.write(f'--Redo {move.piece.color} {move.piece.__str__()} on to {moves_dictionary[tuple(move.destination)]}\n')
 
-        # if mode=='normal move':
-        #     (f'{last_move.color} {last_move.piece.__str__()} to {moves_dictionary[tuple(last_move.destination)]} {seperator}{crash}{check}{check_mate}\n')
-        
-
-        # elif mode == 'undo':
-        #     print('normal undo')
-        #     move = context
-        #     file.write(f'--Undo {move.piece.color} {move.piece.__str__()} back to {moves_dictionary[tuple(move.origin_loc)]}\n')
-        # elif mode =='redo':
-        #     move = context
-        #     file.write(f'--Redo {move.piece.color} {move.piece.__str__()} on to {moves_dictionary[tuple(move.destination)]}\n')
-
-
-
-
-
-
-
-
-
-
-    # if last_move.pawn_promotion:
-
-    #     if mode=='normal move':
-        
-    #         check_bool = context
-            
-    #         # last_move = dataStructures.game_moves_stack.properties[dataStructures.game_moves_stack.top]
-
-    #         sep = False
-    #         # iffff=Move(2,2,2,2,2,2,2,2)
-    #         # iffff.pawn_promotion
-    #         # iffff.castling
-    #         # iffff.en_passant
-
-    #         if last_move.eaten_piece[0] is not None:
-    #             crash = ' Crash'
-    #             sep = True
-    #         else:
-    #             crash = ''
-
-    #         if check_bool:
-    #             check = ' Check'
-    #             sep = True
-    #         else:
-    #             check = ''
-
-    #         if game_boolean:
-    #             check_mate = ''
-    #         else:
-    #             if winner=='Draw':
-    #                 check_mate = ' Draw'
-    #             else:
-    #                 check_mate = ' Check Mate'
-    #                 check = ''
-    #             sep = True
-
-    #         if sep:
-    #             seperator = '-'
-    #         else:
-    #             seperator = ''
-
-    #         file.write(f'{last_move.color} {last_move.eaten_piece[1].__str__()} to {moves_dictionary[tuple(last_move.destination)]} promoted to {last_move.piece.__str__()} {seperator}{crash}{check}{check_mate}\n')
-
-    #     elif mode == 'undo':
-    #         print('undo pawn promotion')
-    #         move = context
-    #         file.write(f'--Undo {move.piece.color} {move.piece.__str__()} depromoted to {move.eaten_piece[1].__str__()} back to {moves_dictionary[tuple(move.origin_loc)]}\n')
-    #     elif mode =='redo':
-    #         move = context
-    #         file.write(f'--Redo {move.piece.color} {move.eaten_piece[1].__str__()} promoted to {move.piece.__str__()} on to {moves_dictionary[tuple(move.destination)]}\n')
-        
-    # elif last_move.castling:
-    #     pass
-    # elif last_move.en_passant:
-    #     pass
-    # else:
-
-    #     if mode=='normal move':
-        
-    #         check_bool = context
-            
-    #         # last_move = dataStructures.game_moves_stack.properties[dataStructures.game_moves_stack.top]
-
-    #         sep = False
-    #         # iffff=Move(2,2,2,2,2,2,2,2)
-    #         # iffff.pawn_promotion
-    #         # iffff.castling
-    #         # iffff.en_passant
-
-    #         if last_move.eaten_piece is not None:
-    #             crash = ' Crash'
-    #             sep = True
-    #         else:
-    #             crash = ''
-
-    #         if check_bool:
-    #             check = ' Check'
-    #             sep = True
-    #         else:
-    #             check = ''
-
-    #         if game_boolean:
-    #             check_mate = ''
-    #         else:
-    #             if winner=='Draw':
-    #                 check_mate = ' Draw'
-    #             else:
-    #                 check_mate = ' Check Mate'
-    #                 check = ''
-    #             sep = True
-
-    #         if sep:
-    #             seperator = '-'
-    #         else:
-    #             seperator = ''
-
-    #         file.write(f'{last_move.color} {last_move.piece.__str__()} to {moves_dictionary[tuple(last_move.destination)]} {seperator}{crash}{check}{check_mate}\n')
-
-    #     elif mode == 'undo':
-    #         print('normal undo')
-    #         move = context
-    #         file.write(f'--Undo {move.piece.color} {move.piece.__str__()} back to {moves_dictionary[tuple(move.origin_loc)]}\n')
-    #     elif mode =='redo':
-    #         move = context
-    #         file.write(f'--Redo {move.piece.color} {move.piece.__str__()} on to {moves_dictionary[tuple(move.destination)]}\n')
-
-
     file.close()
 
 def CheckMate_condition():
@@ -1053,26 +684,11 @@ def CheckMate_condition():
         if piece.color == pieces.turn:
             enemy_moves.extend(piece.allowedMoves(True))
             if piece.__str__()=='King':
-                # print('king initilizied')
+                
                 enemy_king = piece
         
-
-        # else:
-        #     if piece.__str__()=='King':
-        #         # print('kinge khodi initlized')
-        #         kingeKhodi = piece
-
-    # print(f'enemey move = {enemy_moves} len = {len(enemy_moves)}')
-    # print(f'enemy king = {enemy_king.allowedMoves(True)}')
-                
-    # if enemy_king.is_checked:
-    #     print('ey vaaaaaaaaaay')
-    # print(f'enemy king = {enemy_king.color}  vaziate kish = {enemy_king.is_checked}')
-    # print(f'kinge khodi = {kingeKhodi.color}  vaziate kish = {kingeKhodi.is_checked}')
-
-        
     if len(enemy_moves)==0:
-        # print('game over')
+        
         global game_boolean
         game_boolean = False
         global winner
@@ -1142,7 +758,7 @@ def check_timer():
     game_screen.blit(font_big.render('Time Left:',True,'black'),(20,350))
     game_screen.blit(font_big.render(sec,True,'black'),(75,400))
     pygame.display.update([15,345,180,100])
-    # pygame.display.flip()
+    
 
     if float(sec) <= 0 :
         global game_boolean
@@ -1165,7 +781,6 @@ def pawn_promotion(pawn:pieces.Pawn):
     piece_selected = False
     while not piece_selected:
         game_screen.fill('dark gray',[430,230,140,140])
-        # game_screen.blit(piece.img,cal_screen_position(piece.row,piece.column))
         game_screen.blit(queen_img,cal_screen_position(3,3))
         game_screen.blit(knight_img,cal_screen_position(3,4))
         game_screen.blit(bishop_img,cal_screen_position(4,3))
@@ -1186,7 +801,8 @@ def pawn_promotion(pawn:pieces.Pawn):
 
         pygame.display.update([430,230,140,140])
 
-        check_timer()
+        if check_timer():
+            piece_selected = True
 
 
         for ev in pygame.event.get():
@@ -1216,25 +832,6 @@ def pawn_promotion(pawn:pieces.Pawn):
                     dataStructures.game_moves_stack.push(last_move)
                     pieces.alive_pieces.remove(pawn)
                     pieces.alive_pieces.append(promoted_piece)
-
-
-
-
-    # new_queen_img = 'imgs/White_Queen.png' if pawn.color=='White' else 'imgs/Black_Queen.png'
-                    
-    # new_queen_img = f'imgs/{pawn.color}_Queen.png'
-    # new_queen = pieces.Queen(pawn.color,pygame.image.load(new_queen_img),pawn.row,pawn.column)
-    # new_queen.setScale(pygame.transform.scale(new_queen.img,(50,50)))
-
-    # WL_rook.setScale(pygame.transform.scale(WL_rook.img,(50,50)))
-
-    # last_move:Move = dataStructures.game_moves_stack.pop()
-    # last_move.piece = new_queen
-    # dataStructures.game_moves_stack.push(last_move)
-    # pieces.alive_pieces.remove(pawn)
-    # pieces.alive_pieces.append(new_queen)
-
-    # pygame.draw.rect(game_screen,'red',[430,230,140,140],2)
 
 def check_castling(move:Move):
 
@@ -1269,7 +866,6 @@ def check_castling(move:Move):
                     # left white = 2
                     # right black = 3
                     # left black = 4
-                    # move.piece = [move.piece, [RW_Rook,[7,7],[7,5]],1]
                     move.piece = [move.piece, RW_Rook, 1]
                     RW_Rook.setPosition(7,5)
                 elif des_row==7 and des_col==2:
@@ -1302,9 +898,6 @@ def check_en_passant(move:Move):
         
 def check_reset(mouseX , mouseY):
 
-    # pygame.draw.rect(game_screen,'black',[50,480,100,100])
-    # game_screen.blit(font_big.render('Reset',True,'white'),(53,510))
-
     if mouseX>=50 and mouseX<=150 and mouseY>=480 and mouseY<=580:
         
         pieces.alive_pieces.clear()
@@ -1335,11 +928,6 @@ def check_reset(mouseX , mouseY):
     return False
 
 
-
-
-
-#top of board = 228 , 30
-# size of squares = 66
 winner = 'no one'
 BOARD_UPPER_LENGTH = 30
 BOARD_SIDE_LENGTH = 228
@@ -1364,20 +952,9 @@ game_board = pygame.image.load('imgs/chess_board.jpg')
 
 game_board = pygame.transform.scale(game_board,(600,600))
 
-
-# pieces.alive_pieces = []
 eaten_pieces = []
 
-# dataStructures.game_moves = Queue(12000)
-
-# dataStructures.game_moves_stack = Stack(12000)
-# dataStructures.game_moves_temp_stack = Stack(12000)
-
 initialize_pieces()
-#top of board = 228 , 30
-# size of squares = 66
-
-# pieces.turn = 'White'
 
 #clear file
 file = open('GameLog.txt','wt')
@@ -1414,17 +991,17 @@ while game_boolean:
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             game_boolean = False
-            # print("good exit ")
+            
             pygame.quit()
             sys.exit()
-            # break
+        
         
         #select a piece
         if event.type == pygame.MOUSEBUTTONDOWN:
-            # print(pygame.mouse.get_pos())
+            
             mouseX = pygame.mouse.get_pos()[0]
             mouseY = pygame.mouse.get_pos()[1]
-            # print(cal_board_index(mouseX,mouseY))
+            
             cordinate = cal_board_index(mouseX,mouseY)
 
             check_Undo(mouseX,mouseY)
@@ -1432,38 +1009,14 @@ while game_boolean:
             check_reset(mouseX,mouseY)
 
             piece = pieces.check_piece_on_box(cordinate[0],cordinate[1])
-            print(piece)
+        
             
             if piece is not None:
          
                 if piece.color == pieces.turn:
-                    
-                    # print('----------------\neaten pieces:')
-                    # for pie in eaten_pieces:
-                    #     print(pie)
-                    # # print(eaten_pieces)
-                    # print('----------------')
-
                    
                     move_piece(piece)
-      
-                    # check_bool = check_condition()
 
-                    # update_gameLog(['normal move',check_bool])
-
-                    
-                else:
-                    print('NOT YOUR TURN!!')
-
-
-
-    # print(pygame.mouse.get_pos())
-                    
-    
-
-    # initialize_pieces()
-
-    # game_screen.blit(WL_rook.img,WL_rook.starting_position)
     check_timer()
 
     if winner != 'no one':
@@ -1478,16 +1031,5 @@ while game_boolean:
         draw_final_board()
 
     pygame.display.flip()
-
-
-# file = open('GameLog.txt','at')
-# if winner=='Draw':
-#     file.write('Draw !')
-# else:
-#     file.write(f'Winner is: {winner} !')
-# file.close()
-
-# if winner != 'no one':
-#     draw_final_board()
 
 pygame.quit()
